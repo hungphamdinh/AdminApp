@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCourseName"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="UserName"
+                android:textAlignment="center"
+                android:layout_marginTop="6dp"
+                android:textColor="#fff"
+                android:fontFamily="sans-serif-medium"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCoursePrice"
+                android:textStyle="italic"
+                android:text="4543534"
+                android:textColor="#fff"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-medium"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTutorName"
+                android:textColor="#fff"
+                android:textStyle="italic"
+                android:text="Address"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-medium"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCourseDescript"
+                android:textStyle="italic"
+                android:textColor="#fff"
+                android:text="Address"
+                android:layout_marginTop="6dp"
+                android:maxLines="2"
+                android:fontFamily="sans-serif-medium"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textStyle="italic"
+                android:text="..."
+                android:fontFamily="sans-serif-medium"
+                />
+        </LinearLayout>
+
+</androidx.cardview.widget.CardView>
