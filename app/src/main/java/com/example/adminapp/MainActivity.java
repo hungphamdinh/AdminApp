@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnInsert, btnUpdate,btnInsertTutor;
+    private Button btnInsert, btnUpdate,btnInsertTutor,btnUpdateTutor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,9 +16,20 @@ public class MainActivity extends AppCompatActivity {
         btnInsert=(Button)findViewById(R.id.btnInsertCourse);
         btnUpdate=(Button)findViewById(R.id.btnUpdateCourse);
         btnInsertTutor=(Button)findViewById(R.id.btnInsertTutor);
+        btnUpdateTutor=(Button)findViewById(R.id.btnUpdateTutor);
         onClickInsert();
         onClickUpdate();
         onClickInsertTutor();
+        onClickUpdateTutor();
+    }
+
+    private void onClickUpdateTutor() {
+        btnUpdateTutor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,UpdateTutorActivity.class));
+            }
+        });
     }
 
     private void onClickInsertTutor() {

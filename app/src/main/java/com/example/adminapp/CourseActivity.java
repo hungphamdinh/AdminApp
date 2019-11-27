@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,8 +58,6 @@ public class CourseActivity extends AppCompatActivity {
                 viewHolder.txtPrice.setText("Giá: " + model.getPrice());
                 viewHolder.txtDescript.setText(model.getDescript());
                 loadCourseDoc(adapter.getRef(position).getKey(),viewHolder);
-                //viewHolder.txtTutorName.setText("Giảng viên: " + model.getTutorPhone());
-                //setDocKey();
 
             }
 

@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InsertTutorActivity"></activity>
+        <activity android:name=".DetailUpdateTutorActivity"></activity>
+        <activity android:name=".UpdateTutorActivity" />
+        <activity android:name=".InsertTutorActivity" />
         <activity
             android:name=".CourseActivity"
             android:screenOrientation="portrait"
