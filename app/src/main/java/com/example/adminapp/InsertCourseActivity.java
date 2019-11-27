@@ -54,6 +54,7 @@ public class InsertCourseActivity extends AppCompatActivity {
         btnInsert=(Button)findViewById(R.id.btnInsert);
         edtCourse=(EditText)findViewById(R.id.edtCourseDoc);
         btnChooseFile=(Button)findViewById(R.id.btnChooseFile);
+        btnInsert.setEnabled(false);
         chooseFilePdf();
         insertCourse();
     }
@@ -143,6 +144,7 @@ public class InsertCourseActivity extends AppCompatActivity {
         if(requestCode==86&&resultCode==RESULT_OK&&data!=null){
             pdfUri=data.getData();
             //edtCourse.setText(data.getData().getLastPathSegment());
+            btnInsert.setEnabled(true);
         }
         else{
             Toast.makeText(InsertCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
@@ -154,23 +156,47 @@ public class InsertCourseActivity extends AppCompatActivity {
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nameTemp=edtName.getText().toString();
-                String priceTemp=edtPrice.getText().toString();
-                String discountTemp=edtDiscount.getText().toString();
-                String scheduleTemp=edtSchedule.getText().toString();
-                String descriptTemp=edtDescript.getText().toString();
-                String phoneTemp=edtPhone.getText().toString();
-                HashMap<String, String> map = new HashMap<>();
-                //User user = new User(usernameTemp, passwordTemp,"");
-                map.put("courseName", nameTemp);
-                map.put("descript", descriptTemp);
-                map.put("discount", discountTemp);
-                map.put("schedule", scheduleTemp);
-                map.put("price", priceTemp);
-                map.put("tutorPhone", phoneTemp);
-                map.put("isBuy", "false");
-                courseRef.push().setValue(map);
-                uploadDoc();
+                final String nameTemp=edtName.getText().toString();
+                final String priceTemp=edtPrice.getText().toString();
+                final String discountTemp=edtDiscount.getText().toString();
+                final String scheduleTemp=edtSchedule.getText().toString();
+                final String descriptTemp=edtDescript.getText().toString();
+                final String phoneTemp=edtPhone.getText().toString();
+                final String docTemp=edtCourse.getText().toString();
+                DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
+                tutorRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(nameTemp.isEmpty()||priceTemp.isEmpty()||discountTemp.isEmpty()||scheduleTemp.isEmpty()
+                                ||descriptTemp.isEmpty()||phoneTemp.isEmpty()||docTemp.isEmpty()){
+                            Toast.makeText(InsertCourseActivity.this,"Please fill your inform",Toast.LENGTH_SHORT).show();
+                        }
+                        else if(!dataSnapshot.child(phoneTemp).exists()){
+                            Toast.makeText(InsertCourseActivity.this,"This phone number is not exist",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            HashMap<String, String> map = new HashMap<>();
+                            //User user = new User(usernameTemp, passwordTemp,"");
+                            map.put("courseName", nameTemp);
+                            map.put("descript", descriptTemp);
+                            map.put("discount", discountTemp);
+                            map.put("schedule", scheduleTemp);
+                            map.put("price", priceTemp);
+                            map.put("tutorPhone", phoneTemp);
+                            map.put("isBuy", "false");
+                            courseRef.push().setValue(map);
+                         //   edtName.setText(dataSnapshot.child(phoneTemp).toString());
+                            uploadDoc();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
             }
         });
     }

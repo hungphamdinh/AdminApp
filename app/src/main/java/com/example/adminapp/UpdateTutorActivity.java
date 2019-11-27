@@ -27,8 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class UpdateTutorActivity extends AppCompatActivity {
-    private String userPhone;
-    private static final String TAG = "MyCourseFragment";
     private RecyclerView recyclerMenu;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference tutorRef;

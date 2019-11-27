@@ -63,7 +63,7 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
 
     public void updateTutor(final DatabaseReference table_user, final String phoneKey) {
 
-        table_user.child(phoneKey).addValueEventListener(new ValueEventListener() {
+        table_user.child(phoneKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Tutor tutor=dataSnapshot.getValue(Tutor.class);

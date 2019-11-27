@@ -123,22 +123,43 @@ public class UpdateCourseActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nameTemp=edtName.getText().toString();
-                String priceTemp=edtPrice.getText().toString();
-                String discountTemp=edtDiscount.getText().toString();
-                String scheduleTemp=edtSchedule.getText().toString();
-                String descriptTemp=edtDescript.getText().toString();
-                String phoneTemp=edtPhone.getText().toString();
-                HashMap<String, Object> orderMap = new HashMap<>();
-                orderMap.put("courseName", nameTemp);
-                orderMap.put("descript", descriptTemp);
-                orderMap.put("discount", discountTemp);
-                orderMap.put("price", priceTemp);
-                orderMap.put("schedule", scheduleTemp);
-                orderMap.put("tutorPhone", phoneTemp);
-                courseRef.child(courseId).updateChildren(orderMap);
-                uploadDoc();
-                Toast.makeText(UpdateCourseActivity.this, "Thay đổi thành công",Toast.LENGTH_SHORT).show();
+                final String nameTemp=edtName.getText().toString();
+                final String priceTemp=edtPrice.getText().toString();
+                final String discountTemp=edtDiscount.getText().toString();
+                final String scheduleTemp=edtSchedule.getText().toString();
+                final String descriptTemp=edtDescript.getText().toString();
+                final String phoneTemp=edtPhone.getText().toString();
+                final String courseDoc=edtCourseDoc.getText().toString();
+                final DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
+                tutorRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(nameTemp.isEmpty()||priceTemp.isEmpty()||discountTemp.isEmpty()||scheduleTemp.isEmpty()
+                                ||descriptTemp.isEmpty()||phoneTemp.isEmpty()||courseDoc.isEmpty()){
+                            Toast.makeText(UpdateCourseActivity.this,"Kiểm tra lại thông tin",Toast.LENGTH_SHORT).show();
+                        }
+                        else if(!dataSnapshot.child(phoneTemp).exists()){
+                            Toast.makeText(UpdateCourseActivity.this,"Số điện thoại này không tồn tại",Toast.LENGTH_SHORT).show();
+                        }else {
+                            HashMap<String, Object> orderMap = new HashMap<>();
+                            orderMap.put("courseName", nameTemp);
+                            orderMap.put("descript", descriptTemp);
+                            orderMap.put("discount", discountTemp);
+                            orderMap.put("price", priceTemp);
+                            orderMap.put("schedule", scheduleTemp);
+                            orderMap.put("tutorPhone", phoneTemp);
+                            courseRef.child(courseId).updateChildren(orderMap);
+                            uploadDoc();
+                            Toast.makeText(UpdateCourseActivity.this, "Thay đổi thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }
