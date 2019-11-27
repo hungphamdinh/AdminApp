@@ -47,6 +47,26 @@
         android:id="@+id/edtCoursePhoneU"
         android:inputType="phone"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Tên khóa học"
+            android:id="@+id/edtCourseDocName"
+            android:inputType="phone"
+            />
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:hint="Chọn file"
+            android:id="@+id/btnUpdateFile"
+            />
+    </LinearLayout>
+
     <Button
         android:layout_width="200dp"
         android:layout_height="wrap_content"
