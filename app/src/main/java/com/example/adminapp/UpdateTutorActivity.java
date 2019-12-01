@@ -46,6 +46,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
         recyclerMenu.setLayoutManager(layoutManager);
         loadTutor();
     }
+
     private void loadTutor(){
         adapter = new FirebaseRecyclerAdapter<Tutor, StaffViewHolder>
                 (Tutor.class, R.layout.tutor_layout,

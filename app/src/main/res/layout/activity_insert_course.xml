@@ -56,10 +56,11 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tài liệu học"
-            android:id="@+id/edtCourseDoc">
+            android:hint="Hình ảnh"
+            android:id="@+id/edtCourseImage">
 
         </EditText>
+
         <Button
             android:layout_width="100dp"
             android:layout_height="wrap_content"

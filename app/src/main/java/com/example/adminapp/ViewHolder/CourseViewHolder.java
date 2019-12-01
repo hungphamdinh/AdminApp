@@ -27,6 +27,7 @@ public class CourseViewHolder extends RecyclerView.ViewHolder implements View.On
     }
     public void setItemClickListener(ItemClickListener itemClickListener){
         this.itemClickListener=itemClickListener;
+
     }
     @Override
     public void onClick(View view) {

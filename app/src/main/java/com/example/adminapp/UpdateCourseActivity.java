@@ -38,12 +38,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UpdateCourseActivity extends AppCompatActivity {
-    private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourseDoc;
-    private Button btnUpdate,btnUpdateFile;
+    private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourseDoc,edtImage;
+    private Button btnUpdate,btnUpdateFile,btnChooseImage;
     private DatabaseReference courseRef;
     private ArrayList<String> courseDetailList;
     private String courseID;
-    private Uri pdfUri;
+    private Uri pdfUri,imageUri;
     private ProgressDialog progressDialog;
     private String docID;
     @Override
@@ -52,12 +52,14 @@ public class UpdateCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_course);
         edtName=(EditText)findViewById(R.id.edtCourseNameU);
         edtPrice=(EditText)findViewById(R.id.edtCoursePriceU);
+        edtImage=(EditText)findViewById(R.id.edtCourseImage);
         edtDiscount=(EditText)findViewById(R.id.edtCourseDiscountU);
         edtSchedule=(EditText)findViewById(R.id.edtCourseScheduleU);
         edtDescript=(EditText)findViewById(R.id.edtCourseDescriptU);
         edtPhone=(EditText)findViewById(R.id.edtCoursePhoneU);
         edtCourseDoc=(EditText)findViewById(R.id.edtCourseDocName);
         btnUpdateFile=(Button)findViewById(R.id.btnUpdateFile);
+        btnChooseImage=(Button)findViewById(R.id.btnChooseImage);
         btnUpdate=(Button)findViewById(R.id.btnUpdate);
         if (getIntent() != null) {
             courseDetailList = getIntent().getStringArrayListExtra("DetailList");
@@ -69,6 +71,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
                 docID=courseDetailList.get(1);
                 loadDetaillCourse(courseID);
                 loadDetailDoc(courseID);
+                onClickChooseImage();
                 chooseFilePdf();
             }
         }
@@ -88,6 +91,21 @@ public class UpdateCourseActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void onClickChooseImage() {
+        btnChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //        if(ContextCompat.checkSelfPermission(MyAccountActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+                chooseImage();
+                //         }
+//            else{
+//                ActivityCompat.requestPermissions(MyAccountActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+//
+//            }
 
             }
         });
@@ -123,6 +141,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+        //        openDialog();
                 final String nameTemp=edtName.getText().toString();
                 final String priceTemp=edtPrice.getText().toString();
                 final String discountTemp=edtDiscount.getText().toString();
@@ -141,14 +160,51 @@ public class UpdateCourseActivity extends AppCompatActivity {
                         else if(!dataSnapshot.child(phoneTemp).exists()){
                             Toast.makeText(UpdateCourseActivity.this,"Số điện thoại này không tồn tại",Toast.LENGTH_SHORT).show();
                         }else {
-                            HashMap<String, Object> orderMap = new HashMap<>();
-                            orderMap.put("courseName", nameTemp);
-                            orderMap.put("descript", descriptTemp);
-                            orderMap.put("discount", discountTemp);
-                            orderMap.put("price", priceTemp);
-                            orderMap.put("schedule", scheduleTemp);
-                            orderMap.put("tutorPhone", phoneTemp);
-                            courseRef.child(courseId).updateChildren(orderMap);
+
+                            final String fileName=System.currentTimeMillis()+"";
+                            StorageReference storageReference= FirebaseStorage.getInstance().getReference();
+                            storageReference.child("/Image/").child(fileName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    String url=taskSnapshot.getDownloadUrl().toString();
+                                    // map.put("courseId", key);
+                                    HashMap<String, Object> orderMap = new HashMap<>();
+                                    orderMap.put("courseName", nameTemp);
+                                    orderMap.put("image",url);
+                                    orderMap.put("descript", descriptTemp);
+                                    orderMap.put("discount", discountTemp);
+                                    orderMap.put("price", priceTemp);
+                                    orderMap.put("schedule", scheduleTemp);
+                                    orderMap.put("tutorPhone", phoneTemp);
+                                    DatabaseReference courseRef=FirebaseDatabase.getInstance().getReference("Course");
+                                    courseRef.child(courseId).updateChildren(orderMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                         //       progressDialog.dismiss();
+                                                Toast.makeText(UpdateCourseActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
+                                            }
+                                            else{
+                                       //         progressDialog.dismiss();
+                                                Toast.makeText(UpdateCourseActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(UpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                   // int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                                   // progressDialog.setProgress(currentProgress);
+                                }
+                            });
+//                            courseRef.child(courseId).updateChildren(orderMap);
                             uploadDoc();
                             Toast.makeText(UpdateCourseActivity.this, "Thay đổi thành công", Toast.LENGTH_SHORT).show();
                         }
@@ -172,11 +228,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
             Toast.makeText(UpdateCourseActivity.this,"Chọn file",Toast.LENGTH_SHORT).show();
     }
     private void upLoadToStorage(Uri pdfUri, final String key) {
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Đang tải...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
+        openDialog();
         final String fileName=System.currentTimeMillis()+"";
         StorageReference storageReference= FirebaseStorage.getInstance().getReference();
         storageReference.child("/CourseFile/").child(fileName).putFile(pdfUri)
@@ -217,6 +269,15 @@ public class UpdateCourseActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void openDialog() {
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Đang tải...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+    }
+
     private void chooseFilePdf() {
         btnUpdateFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,22 +299,34 @@ public class UpdateCourseActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent,86);
     }
+    private void chooseImage() {
+        Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), Common.PICK_IMAGE_REQUEST);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==9&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
-        {
+//        if(requestCode==9&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
+//        {
             selectPdf();
-        }
-        else
-            Toast.makeText(UpdateCourseActivity.this,"Provide pemrission",Toast.LENGTH_SHORT).show();
+            chooseImage();
+        //}
+       // else
+       //     Toast.makeText(UpdateCourseActivity.this,"Provide pemrission",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==86&&resultCode==RESULT_OK&&data!=null){
             pdfUri=data.getData();
-         //   edtCourseDoc.setText(data.getData().getLastPathSegment());
+            edtCourseDoc.setText(data.getData().getLastPathSegment());
+        }
+        if(requestCode==Common.PICK_IMAGE_REQUEST&&resultCode==RESULT_OK&&data!=null){
+            imageUri=data.getData();
+            //edtImage.setText(data.getData().getLastPathSegment());
         }
         else{
             Toast.makeText(UpdateCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();

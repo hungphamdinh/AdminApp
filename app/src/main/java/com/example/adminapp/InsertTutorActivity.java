@@ -90,6 +90,7 @@ public class InsertTutorActivity extends AppCompatActivity {
                                         map.put("password", passwordTemp);
                                         map.put("email", emailTemp);//
                                         map.put("experience",expTemp);
+                                        map.put("avatar","default");
                                         table_user.child(edtPhone.getText().toString()).setValue(map);
                                         Toast.makeText(InsertTutorActivity.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
                                         //finish();

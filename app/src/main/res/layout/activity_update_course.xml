@@ -55,6 +55,28 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:hint="Tài liệu học"
+            android:id="@+id/edtCourseDoc">
+        </EditText>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Chọn hình ảnh"
+            android:id="@+id/btnChooseImage"
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:hint="Tên khóa học"
             android:id="@+id/edtCourseDocName"
             android:inputType="phone"

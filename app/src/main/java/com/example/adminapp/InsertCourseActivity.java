@@ -76,6 +76,7 @@ public class InsertCourseActivity extends AppCompatActivity {
                         map.put("courseId", key);
                         map.put("docName", "Tài liệu");
                         map.put("docUrl", url);
+                        map.put("image","default");
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Doc");
                         reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
