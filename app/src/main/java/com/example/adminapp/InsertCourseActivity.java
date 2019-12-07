@@ -75,8 +75,8 @@ public class InsertCourseActivity extends AppCompatActivity {
                         String url=taskSnapshot.getDownloadUrl().toString();
                         map.put("courseId", key);
                         map.put("docName", "Tài liệu");
+                        map.put("type","doc");
                         map.put("docUrl", url);
-                        map.put("image","default");
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Doc");
                         reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -84,6 +84,9 @@ public class InsertCourseActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     progressDialog.dismiss();
                                     Toast.makeText(InsertCourseActivity.this,"Tải file lên thành công",Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(InsertCourseActivity.this,TestActivity.class);
+                                    intent.putExtra("courseID",key);
+                                    startActivity(intent);
                                 }
                                 else{
                                     progressDialog.dismiss();
@@ -163,13 +166,13 @@ public class InsertCourseActivity extends AppCompatActivity {
                 final String scheduleTemp=edtSchedule.getText().toString();
                 final String descriptTemp=edtDescript.getText().toString();
                 final String phoneTemp=edtPhone.getText().toString();
-                final String docTemp=edtCourse.getText().toString();
+//                final String docTemp=edtCourse.getText().toString();
                 DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
                 tutorRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(nameTemp.isEmpty()||priceTemp.isEmpty()||discountTemp.isEmpty()||scheduleTemp.isEmpty()
-                                ||descriptTemp.isEmpty()||phoneTemp.isEmpty()||docTemp.isEmpty()){
+                        if(nameTemp.equals("")||priceTemp.equals("")||discountTemp.equals("")||scheduleTemp.equals("")
+                                ||descriptTemp.equals("")||phoneTemp.equals("")){
                             Toast.makeText(InsertCourseActivity.this,"Please fill your inform",Toast.LENGTH_SHORT).show();
                         }
                         else if(!dataSnapshot.child(phoneTemp).exists()){
@@ -212,6 +215,7 @@ public class InsertCourseActivity extends AppCompatActivity {
                     for(DataSnapshot childSnap:dataSnapshot.getChildren()) {
                         key= childSnap.getKey();
                     }
+        //            upLoadTest(key);
                     upLoadToStorage(pdfUri,key);
                     Toast.makeText(InsertCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
@@ -225,4 +229,6 @@ public class InsertCourseActivity extends AppCompatActivity {
         else
             Toast.makeText(InsertCourseActivity.this,"Chọn file",Toast.LENGTH_SHORT).show();
     }
+
+
 }

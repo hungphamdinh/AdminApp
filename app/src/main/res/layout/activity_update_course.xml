@@ -1,98 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UpdateCourseActivity"
-    android:gravity="center"
-    android:orientation="vertical"
-    >
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tên khóa học"
-        android:id="@+id/edtCourseNameU"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Giá"
-        android:inputType="number"
-        android:id="@+id/edtCoursePriceU"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mô tả"
-        android:id="@+id/edtCourseDescriptU"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Giảm giá"
-        android:inputType="number"
-        android:id="@+id/edtCourseDiscountU"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thời gian biểu"
-        android:id="@+id/edtCourseScheduleU"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Số điện thoại giảng viên"
-        android:id="@+id/edtCoursePhoneU"
-        android:inputType="phone"
-        />
+    android:keepScreenOn="true"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        tools:context=".UpdateCourseActivity"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
         >
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Tài liệu học"
-            android:id="@+id/edtCourseDoc">
-        </EditText>
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Chọn hình ảnh"
-            android:id="@+id/btnChooseImage"
-            />
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Tên khóa học"
-            android:id="@+id/edtCourseDocName"
+            android:id="@+id/edtCourseNameU"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Giá"
+            android:inputType="number"
+            android:id="@+id/edtCoursePriceU"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mô tả"
+            android:id="@+id/edtCourseDescriptU"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Giảm giá"
+            android:inputType="number"
+            android:id="@+id/edtCourseDiscountU"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Thời gian biểu"
+            android:id="@+id/edtCourseScheduleU"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số điện thoại giảng viên"
+            android:id="@+id/edtCoursePhoneU"
             android:inputType="phone"
             />
-        <Button
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Chọn file"
-            android:id="@+id/btnUpdateFile"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="Tài liệu học"
+                android:enabled="false"
+                android:maxLines="2"
+                android:id="@+id/edtCourseImageUrl">
+            </EditText>
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Chọn hình ảnh"
+                android:id="@+id/btnChooseImage"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Tên khóa học"
+                android:id="@+id/edtCourseDocName"
+                android:enabled="false"
+                android:inputType="phone"
+                />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="Chọn file"
+                android:id="@+id/btnUpdateFile"
+                />
+        </LinearLayout>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Thay đổi"
+            android:id="@+id/btnUpdate"
+            />
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Thay đổi bài test"
+            android:id="@+id/btnUpdateTest"
             />
     </LinearLayout>
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:hint="Thay đổi"
-        android:id="@+id/btnUpdate"
-        />
-</LinearLayout>
+</ScrollView>

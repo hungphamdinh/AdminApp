@@ -1,63 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/parentTutor"
-    android:layout_height="match_parent"
-    tools:context=".DetailUpdateTutorActivity"
-    android:gravity="center"
-    android:orientation="vertical"
-    >
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tên giảng viên"
-        android:id="@+id/edtTutorNameUpdate"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mật khẩu"
-        android:inputType="number"
-        android:id="@+id/edtPasswordTutorUpdate"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:id="@+id/edtTutorMailUpdate"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Kinh nghiệm"
-        android:id="@+id/edtExperienceUpdate"
-        />
+    android:layout_height="match_parent">
     <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content">
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Hình ảnh"
-            android:id="@+id/edtProfile"
-            android:inputType="phone"
+            android:hint="Tên giảng viên"
+            android:id="@+id/edtTutorNameUpdate"
             />
-        <Button
-            android:layout_width="100dp"
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Chọn file"
-            android:id="@+id/btnUpdateFile"
+            android:hint="Mật khẩu"
+            android:inputType="number"
+            android:id="@+id/edtPasswordTutorUpdate"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:id="@+id/edtTutorMailUpdate"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kinh nghiệm"
+                android:id="@+id/edtExperienceUpdate"
+                />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Hình ảnh"
+                android:id="@+id/edtProfile"
+                android:inputType="phone"
+                />
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="Chọn file"
+                android:id="@+id/btnUpdateFile"
+                />
+        </LinearLayout>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Thêm "
+            android:id="@+id/btnUpdateTT"
             />
     </LinearLayout>
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:hint="Thêm "
-        android:id="@+id/btnUpdateTT"
-        />
-</LinearLayout>
+    </ScrollView>
+
+

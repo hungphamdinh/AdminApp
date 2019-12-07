@@ -4,6 +4,16 @@ public class Doc {
     private String courseId;
     private String docName;
     private String docUrl;
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Doc(){}
     public String getCourseId() {
         return courseId;

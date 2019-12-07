@@ -56,11 +56,9 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
         edtProfile=(EditText)findViewById(R.id.edtProfile);
         btnInsert = (Button)findViewById(R.id.btnUpdateTT);
         btnChooseFile =(Button)findViewById(R.id.btnUpdateFile);
-        setupUI(findViewById(R.id.parentTutor));
+       // setupUI(findViewById(R.id.parentTutor));
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = firebaseDatabase.getReference("Tutor");
-//        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-//        actionBar.hide();
         if (getIntent() != null)
             phoneKey = getIntent().getStringExtra("phoneKey");
         if (!phoneKey.isEmpty() && phoneKey != null) {
@@ -207,34 +205,34 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
 
     }
 
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(
-                activity.getCurrentFocus().getWindowToken(), 0);
-    }
-
-    public void setupUI(View view) {
-
-        // Set up touch listener for non-text box views to hide keyboard.
-        if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(DetailUpdateTutorActivity.this);
-                    return false;
-                }
-            });
-        }
-
-        //If a layout container, iterate over children and seed recursion.
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                View innerView = ((ViewGroup) view).getChildAt(i);
-                setupUI(innerView);
-            }
-        }
-    }
+//    public static void hideSoftKeyboard(Activity activity) {
+//        InputMethodManager inputMethodManager =
+//                (InputMethodManager) activity.getSystemService(
+//                        Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(
+//                activity.getCurrentFocus().getWindowToken(), 0);
+//    }
+//
+//    public void setupUI(View view) {
+//
+//        // Set up touch listener for non-text box views to hide keyboard.
+//        if (!(view instanceof EditText)) {
+//            view.setOnTouchListener(new View.OnTouchListener() {
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    hideSoftKeyboard(DetailUpdateTutorActivity.this);
+//                    return false;
+//                }
+//            });
+//        }
+//
+//        //If a layout container, iterate over children and seed recursion.
+//        if (view instanceof ViewGroup) {
+//            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+//                View innerView = ((ViewGroup) view).getChildAt(i);
+//                setupUI(innerView);
+//            }
+//        }
+//    }
     private void chooseImage() {
         Intent intent=new Intent();
         intent.setType("image/*");

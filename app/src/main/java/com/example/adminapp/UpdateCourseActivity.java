@@ -39,20 +39,20 @@ import java.util.HashMap;
 
 public class UpdateCourseActivity extends AppCompatActivity {
     private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourseDoc,edtImage;
-    private Button btnUpdate,btnUpdateFile,btnChooseImage;
+    private Button btnUpdate,btnUpdateFile,btnChooseImage,btnUpdateTest;
     private DatabaseReference courseRef;
     private ArrayList<String> courseDetailList;
     private String courseID;
     private Uri pdfUri,imageUri;
     private ProgressDialog progressDialog;
-    private String docID;
+    private String docKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_course);
         edtName=(EditText)findViewById(R.id.edtCourseNameU);
         edtPrice=(EditText)findViewById(R.id.edtCoursePriceU);
-        edtImage=(EditText)findViewById(R.id.edtCourseImage);
+        edtImage=(EditText)findViewById(R.id.edtCourseImageUrl);
         edtDiscount=(EditText)findViewById(R.id.edtCourseDiscountU);
         edtSchedule=(EditText)findViewById(R.id.edtCourseScheduleU);
         edtDescript=(EditText)findViewById(R.id.edtCourseDescriptU);
@@ -60,6 +60,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
         edtCourseDoc=(EditText)findViewById(R.id.edtCourseDocName);
         btnUpdateFile=(Button)findViewById(R.id.btnUpdateFile);
         btnChooseImage=(Button)findViewById(R.id.btnChooseImage);
+        btnUpdateTest=(Button)findViewById(R.id.btnUpdateTest);
         btnUpdate=(Button)findViewById(R.id.btnUpdate);
         if (getIntent() != null) {
             courseDetailList = getIntent().getStringArrayListExtra("DetailList");
@@ -68,14 +69,26 @@ public class UpdateCourseActivity extends AppCompatActivity {
         if (!courseDetailList.isEmpty() && courseDetailList != null) {
             if (Common.isConnectedToInternet(this)) {
                 courseID=courseDetailList.get(0);
-                docID=courseDetailList.get(1);
+                docKey =courseDetailList.get(1);
                 loadDetaillCourse(courseID);
                 loadDetailDoc(courseID);
                 onClickChooseImage();
                 chooseFilePdf();
+                onClickUpdateTest();
             }
         }
 
+    }
+
+    private void onClickUpdateTest() {
+        btnUpdateTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(UpdateCourseActivity.this, TestActivity.class);
+                intent.putExtra("courseID",courseID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadDetailDoc(String courseID) {
@@ -86,6 +99,8 @@ public class UpdateCourseActivity extends AppCompatActivity {
                 for(DataSnapshot childSnap:dataSnapshot.getChildren()){
                     Doc doc=childSnap.getValue(Doc.class);
                     edtCourseDoc.setText(doc.getDocName());
+                    if(doc.getType().equals("doc"))
+                        edtImage.setText(doc.getDocUrl());
                 }
             }
 
@@ -126,7 +141,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
                 edtPhone.setText(course.getTutorPhone());
                 String tutorPhone = course.getTutorPhone();
 //                loadDetailTutor(tutorPhone);
-                onClickUpdate(courseId);
+                onCheckImage(courseId);
 
             }
                 @Override
@@ -137,18 +152,49 @@ public class UpdateCourseActivity extends AppCompatActivity {
 
             }
 
-    private void onClickUpdate(final String courseId) {
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-        //        openDialog();
-                final String nameTemp=edtName.getText().toString();
-                final String priceTemp=edtPrice.getText().toString();
-                final String discountTemp=edtDiscount.getText().toString();
-                final String scheduleTemp=edtSchedule.getText().toString();
-                final String descriptTemp=edtDescript.getText().toString();
-                final String phoneTemp=edtPhone.getText().toString();
-                final String courseDoc=edtCourseDoc.getText().toString();
+    private void onCheckImage(final String courseId) {
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //        openDialog();
+                    final String nameTemp = edtName.getText().toString();
+                    final String priceTemp = edtPrice.getText().toString();
+                    final String discountTemp = edtDiscount.getText().toString();
+                    final String scheduleTemp = edtSchedule.getText().toString();
+                    final String descriptTemp = edtDescript.getText().toString();
+                    final String phoneTemp = edtPhone.getText().toString();
+                    final String courseDoc = edtCourseDoc.getText().toString();
+                    HashMap<String, Object> listData = new HashMap<>();
+                    listData.put("name", nameTemp);
+                    listData.put("descript", descriptTemp);
+                    listData.put("discount", discountTemp);
+                    listData.put("price", priceTemp);
+                    listData.put("schedule", scheduleTemp);
+                    listData.put("phone", phoneTemp);
+                    listData.put("courseId", courseId);
+                    if (imageUri != null) {
+                        onClickUpdate(courseId, listData);
+                        Toast.makeText(UpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        setDataToFirebae(edtImage.getText().toString(),listData);
+                        Toast.makeText(UpdateCourseActivity.this, "Chưa chọn file hình ảnh", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+
+    }
+    private void onClickUpdate(final String courseId, final HashMap<String,Object>listData) {
+        final String nameTemp = listData.get("name").toString();
+        final String priceTemp = listData.get("price").toString();
+        final String discountTemp = listData.get("discount").toString();
+        final String scheduleTemp = listData.get("schedule").toString();
+        final String descriptTemp = listData.get("descript").toString();
+        final String phoneTemp = listData.get("phone").toString();
+        final String courseDoc = edtCourseDoc.getText().toString();
                 final DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
                 tutorRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -168,28 +214,8 @@ public class UpdateCourseActivity extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     String url=taskSnapshot.getDownloadUrl().toString();
                                     // map.put("courseId", key);
-                                    HashMap<String, Object> orderMap = new HashMap<>();
-                                    orderMap.put("courseName", nameTemp);
-                                    orderMap.put("image",url);
-                                    orderMap.put("descript", descriptTemp);
-                                    orderMap.put("discount", discountTemp);
-                                    orderMap.put("price", priceTemp);
-                                    orderMap.put("schedule", scheduleTemp);
-                                    orderMap.put("tutorPhone", phoneTemp);
-                                    DatabaseReference courseRef=FirebaseDatabase.getInstance().getReference("Course");
-                                    courseRef.child(courseId).updateChildren(orderMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                         //       progressDialog.dismiss();
-                                                Toast.makeText(UpdateCourseActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
-                                            }
-                                            else{
-                                       //         progressDialog.dismiss();
-                                                Toast.makeText(UpdateCourseActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
+
+                                    setDataToFirebae(url, listData);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -205,7 +231,6 @@ public class UpdateCourseActivity extends AppCompatActivity {
                                 }
                             });
 //                            courseRef.child(courseId).updateChildren(orderMap);
-                            uploadDoc();
                             Toast.makeText(UpdateCourseActivity.this, "Thay đổi thành công", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -217,15 +242,41 @@ public class UpdateCourseActivity extends AppCompatActivity {
                 });
 
             }
+
+    private void setDataToFirebae(String url,HashMap<String,Object>listData) {
+        HashMap<String, Object> orderMap = new HashMap<>();
+        orderMap.put("courseName", listData.get("name"));
+        orderMap.put("image",url);
+        orderMap.put("descript", listData.get("descript"));
+        orderMap.put("discount", listData.get("discount"));
+        orderMap.put("price", listData.get("price"));
+        orderMap.put("schedule", listData.get("schedule"));
+        orderMap.put("tutorPhone", listData.get("phone"));
+        DatabaseReference courseRef= FirebaseDatabase.getInstance().getReference("Course");
+        courseRef.child(listData.get("courseId").toString()).updateChildren(orderMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+             //       progressDialog.dismiss();
+                    Toast.makeText(UpdateCourseActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
+                }
+                else{
+           //         progressDialog.dismiss();
+                    Toast.makeText(UpdateCourseActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
+                }
+            }
         });
+        uploadDoc();
+
     }
+
     private void uploadDoc() {
         if(pdfUri!=null){
-            upLoadToStorage(pdfUri,docID);
+            upLoadToStorage(pdfUri, docKey);
             Toast.makeText(UpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
         }
         else
-            Toast.makeText(UpdateCourseActivity.this,"Chọn file",Toast.LENGTH_SHORT).show();
+            Toast.makeText(UpdateCourseActivity.this,"Chưa chọn file",Toast.LENGTH_SHORT).show();
     }
     private void upLoadToStorage(Uri pdfUri, final String key) {
         openDialog();
@@ -322,14 +373,14 @@ public class UpdateCourseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==86&&resultCode==RESULT_OK&&data!=null){
             pdfUri=data.getData();
-            edtCourseDoc.setText(data.getData().getLastPathSegment());
+            //edtCourseDoc.setText(data.getData().getLastPathSegment());
         }
         if(requestCode==Common.PICK_IMAGE_REQUEST&&resultCode==RESULT_OK&&data!=null){
             imageUri=data.getData();
             //edtImage.setText(data.getData().getLastPathSegment());
         }
-        else{
-            Toast.makeText(UpdateCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
-        }
+//        else{
+//            Toast.makeText(UpdateCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
+//        }
     }
 }
