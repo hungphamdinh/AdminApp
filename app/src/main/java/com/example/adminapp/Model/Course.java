@@ -6,6 +6,15 @@ public class Course {
     private String discount;
     private String price;
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    private String image;
     public String getCourseDoc() {
         return courseDoc;
     }

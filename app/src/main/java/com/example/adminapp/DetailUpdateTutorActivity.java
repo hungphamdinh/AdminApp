@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Model.Tutor;
+import com.example.adminapp.Presenter.DetailUpdateTutor.DetailTutorPresenter;
+import com.example.adminapp.View.DetailUpdateTutor.IDetailTutorView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,14 +39,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
-public class DetailUpdateTutorActivity extends AppCompatActivity {
+public class DetailUpdateTutorActivity extends AppCompatActivity implements IDetailTutorView {
     private EditText edtPass, edtUsername,edtExp,edtProfile;
     private Button btnInsert, btnChooseFile;
     private EditText edtEmail;
     private String phoneKey;
-    private String emailPattern = "[a-zA-Z0-9._-]+@gmail+\\.+com+";
     private Uri imageUri;
     private ProgressDialog progressDialog;
+    private DetailTutorPresenter detailTutorPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
         edtProfile=(EditText)findViewById(R.id.edtProfile);
         btnInsert = (Button)findViewById(R.id.btnUpdateTT);
         btnChooseFile =(Button)findViewById(R.id.btnUpdateFile);
+        detailTutorPresenter=new DetailTutorPresenter(this);
        // setupUI(findViewById(R.id.parentTutor));
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = firebaseDatabase.getReference("Tutor");
@@ -63,7 +66,8 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
             phoneKey = getIntent().getStringExtra("phoneKey");
         if (!phoneKey.isEmpty() && phoneKey != null) {
             if (Common.isConnectedToInternet(this)) {
-                updateTutor(table_user,phoneKey);
+                detailTutorPresenter.loadData(phoneKey);
+                onClickUpdate();
 
             } else {
                 Toast.makeText(DetailUpdateTutorActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
@@ -75,56 +79,19 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
 
     }
 
-    private void updateStorage(final String phoneKey) {
-        final String usernameTemp = edtUsername.getText().toString();
-        final String passwordTemp = edtPass.getText().toString();
-        final String emailTemp = edtEmail.getText().toString();
-        final String expTemp=edtExp.getText().toString();
-        HashMap<String, Object> map = new HashMap<>();
-        progressDialog=new ProgressDialog(DetailUpdateTutorActivity.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("Đang tải...");
-        progressDialog.setProgress(0);
-        progressDialog.show();
-        final String fileName=System.currentTimeMillis()+"";
-        StorageReference storageReference= FirebaseStorage.getInstance().getReference();
-        storageReference.child("/Image/").child(fileName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void onClickUpdate() {
+        btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                HashMap<String, Object> map = new HashMap<>();
-                String url=taskSnapshot.getDownloadUrl().toString();
-                // map.put("courseId", key);
-                map.put("avatar", url);
-                map.put("username", usernameTemp);
-                map.put("password", passwordTemp);
-                map.put("email", emailTemp);//
-                map.put("experience", expTemp);
-                DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Tutor");
-                reference.child(phoneKey).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            progressDialog.dismiss();
-                            Toast.makeText(DetailUpdateTutorActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            progressDialog.dismiss();
-                            Toast.makeText(DetailUpdateTutorActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(DetailUpdateTutorActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
-
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                progressDialog.setProgress(currentProgress);
+            public void onClick(View view) {
+                progressDialog=getProgress();
+                HashMap<String,Object> edtMap=new HashMap<>();
+                edtMap.put("imageUri",imageUri);
+                edtMap.put("name",edtUsername.getText().toString());
+                edtMap.put("password",edtPass.getText().toString());
+                edtMap.put("email",edtEmail.getText().toString());
+                edtMap.put("profile",edtProfile.getText().toString());
+                edtMap.put("exp",edtExp.getText().toString());
+                detailTutorPresenter.onClick(edtMap,phoneKey);
             }
         });
     }
@@ -144,65 +111,6 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
 
             }
         });
-    }
-    public void updateTutor(final DatabaseReference table_user, final String phoneKey) {
-
-        table_user.child(phoneKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Tutor tutor=dataSnapshot.getValue(Tutor.class);
-                edtUsername.setText(tutor.getUsername());
-                edtExp.setText(tutor.getExperience());
-                edtEmail.setText(tutor.getEmail());
-                edtPass.setText(tutor.getPassword());
-                btnInsert.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("ResourceType")
-                    @Override
-                    public void onClick(View view) {
-                        if (Common.isConnectedToInternet(getBaseContext())) {
-                            final ProgressDialog progress = new ProgressDialog(DetailUpdateTutorActivity.this);
-                            progress.setTitle("Loading");
-                            progress.setMessage("Wait while loading...");
-                            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-                            progress.show();
-
-                            final String usernameTemp = edtUsername.getText().toString();
-                            final String passwordTemp = edtPass.getText().toString();
-                            final String emailTemp = edtEmail.getText().toString();
-                            final String expTemp=edtExp.getText().toString();
-                            //    for (DataSnapshot uniqueKeySnapshot : dataSnapshot.getChildren()) {
-                            if (usernameTemp.equals("") || passwordTemp.equals("") || emailTemp.isEmpty()||expTemp.isEmpty()) {
-                                progress.dismiss();
-                                Toast.makeText(DetailUpdateTutorActivity.this, "Please fill your inform", Toast.LENGTH_SHORT).show();
-                            } else {
-                                if (emailTemp.trim().matches(emailPattern)) {
-                                    progress.dismiss();
-                                    updateStorage(phoneKey);
-                                    //finish();
-                                }
-                                else {
-                                    progress.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                            //      }
-
-                        } else {
-                            Toast.makeText(DetailUpdateTutorActivity.this, "Check your connection", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                });
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
     }
 
 //    public static void hideSoftKeyboard(Activity activity) {
@@ -233,6 +141,14 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
+    private ProgressDialog getProgress(){
+        progressDialog=new ProgressDialog(DetailUpdateTutorActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("Đang tải...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+        return progressDialog;
+    }
     private void chooseImage() {
         Intent intent=new Intent();
         intent.setType("image/*");
@@ -259,5 +175,30 @@ public class DetailUpdateTutorActivity extends AppCompatActivity {
         else{
             Toast.makeText(DetailUpdateTutorActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onSuccess(String msg) {
+        progressDialog.cancel();
+        Toast.makeText(DetailUpdateTutorActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailed(String msg) {
+        progressDialog.cancel();
+        Toast.makeText(DetailUpdateTutorActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoading(int percent) {
+        progressDialog.setProgress(percent);
+    }
+
+    @Override
+    public void onLoadData(HashMap<String, Object> map) {
+        edtUsername.setText(map.get("userName").toString());
+        edtPass.setText(map.get("password").toString());
+        edtExp.setText(map.get("exp").toString());
+        edtEmail.setText(map.get("email").toString());
     }
 }
