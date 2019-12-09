@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.adminapp.View.InsertCourse.InsertCourseActivity;
+import com.example.adminapp.View.InsertTutor.InsertTutorActivity;
+
 public class MainActivity extends AppCompatActivity {
     private Button btnInsert, btnUpdate,btnInsertTutor,btnUpdateTutor;
     @Override
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btnInsertTutor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,InsertTutorActivity.class));
+                startActivity(new Intent(MainActivity.this, InsertTutorActivity.class));
 
             }
         });

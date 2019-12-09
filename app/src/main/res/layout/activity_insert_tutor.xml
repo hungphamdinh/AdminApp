@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:id="@+id/parentSignUp"
         android:layout_height="wrap_content"
-        tools:context=".InsertTutorActivity"
+        tools:context=".View.InsertTutor.InsertTutorActivity"
         android:gravity="center"
         android:orientation="vertical"
         >

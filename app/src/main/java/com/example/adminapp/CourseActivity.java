@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,7 +91,7 @@ public class CourseActivity extends AppCompatActivity {
         viewHolder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                Intent intent = new Intent(CourseActivity.this, UpdateCourseActivity.class);
+                Intent intent = new Intent(CourseActivity.this, DetailUpdateCourseActivity.class);
                 ArrayList<String> listIntent = new ArrayList<>();
                 listIntent.add(key);
                 listIntent.add(docKey);

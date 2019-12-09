@@ -37,7 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UpdateCourseActivity extends AppCompatActivity {
+public class DetailUpdateCourseActivity extends AppCompatActivity {
     private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourseDoc,edtImage;
     private Button btnUpdate,btnUpdateFile,btnChooseImage,btnUpdateTest;
     private DatabaseReference courseRef;
@@ -84,7 +84,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
         btnUpdateTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(UpdateCourseActivity.this, TestActivity.class);
+                Intent intent=new Intent(DetailUpdateCourseActivity.this, TestActivity.class);
                 intent.putExtra("courseID",courseID);
                 startActivity(intent);
             }
@@ -174,12 +174,12 @@ public class UpdateCourseActivity extends AppCompatActivity {
                     listData.put("courseId", courseId);
                     if (imageUri != null) {
                         onClickUpdate(courseId, listData);
-                        Toast.makeText(UpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailUpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
                         setDataToFirebae(edtImage.getText().toString(),listData);
-                        Toast.makeText(UpdateCourseActivity.this, "Chưa chọn file hình ảnh", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailUpdateCourseActivity.this, "Chưa chọn file hình ảnh", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -201,10 +201,10 @@ public class UpdateCourseActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(nameTemp.isEmpty()||priceTemp.isEmpty()||discountTemp.isEmpty()||scheduleTemp.isEmpty()
                                 ||descriptTemp.isEmpty()||phoneTemp.isEmpty()||courseDoc.isEmpty()){
-                            Toast.makeText(UpdateCourseActivity.this,"Kiểm tra lại thông tin",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailUpdateCourseActivity.this,"Kiểm tra lại thông tin",Toast.LENGTH_SHORT).show();
                         }
                         else if(!dataSnapshot.child(phoneTemp).exists()){
-                            Toast.makeText(UpdateCourseActivity.this,"Số điện thoại này không tồn tại",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailUpdateCourseActivity.this,"Số điện thoại này không tồn tại",Toast.LENGTH_SHORT).show();
                         }else {
 
                             final String fileName=System.currentTimeMillis()+"";
@@ -220,7 +220,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(UpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailUpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
 
                                 }
                             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -231,7 +231,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
                                 }
                             });
 //                            courseRef.child(courseId).updateChildren(orderMap);
-                            Toast.makeText(UpdateCourseActivity.this, "Thay đổi thành công", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailUpdateCourseActivity.this, "Thay đổi thành công", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -258,11 +258,11 @@ public class UpdateCourseActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
              //       progressDialog.dismiss();
-                    Toast.makeText(UpdateCourseActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailUpdateCourseActivity.this,"Cập nhật thành công",Toast.LENGTH_SHORT).show();
                 }
                 else{
            //         progressDialog.dismiss();
-                    Toast.makeText(UpdateCourseActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailUpdateCourseActivity.this,"Cập nhật thất bại",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -273,10 +273,10 @@ public class UpdateCourseActivity extends AppCompatActivity {
     private void uploadDoc() {
         if(pdfUri!=null){
             upLoadToStorage(pdfUri, docKey);
-            Toast.makeText(UpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailUpdateCourseActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
         }
         else
-            Toast.makeText(UpdateCourseActivity.this,"Chưa chọn file",Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailUpdateCourseActivity.this,"Chưa chọn file",Toast.LENGTH_SHORT).show();
     }
     private void upLoadToStorage(Uri pdfUri, final String key) {
         openDialog();
@@ -297,11 +297,11 @@ public class UpdateCourseActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     progressDialog.dismiss();
-                                    Toast.makeText(UpdateCourseActivity.this,"Tải file lên thành công",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailUpdateCourseActivity.this,"Tải file lên thành công",Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     progressDialog.dismiss();
-                                    Toast.makeText(UpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailUpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -309,7 +309,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailUpdateCourseActivity.this,"Tải file lên thất bại",Toast.LENGTH_SHORT).show();
 
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -333,11 +333,11 @@ public class UpdateCourseActivity extends AppCompatActivity {
         btnUpdateFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ContextCompat.checkSelfPermission(UpdateCourseActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(DetailUpdateCourseActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
                     selectPdf();
                 }
                 else{
-                    ActivityCompat.requestPermissions(UpdateCourseActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+                    ActivityCompat.requestPermissions(DetailUpdateCourseActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
 
                 }
             }
@@ -366,7 +366,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
             chooseImage();
         //}
        // else
-       //     Toast.makeText(UpdateCourseActivity.this,"Provide pemrission",Toast.LENGTH_SHORT).show();
+       //     Toast.makeText(DetailUpdateCourseActivity.this,"Provide pemrission",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -380,7 +380,7 @@ public class UpdateCourseActivity extends AppCompatActivity {
             //edtImage.setText(data.getData().getLastPathSegment());
         }
 //        else{
-//            Toast.makeText(UpdateCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(DetailUpdateCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
 //        }
     }
 }
