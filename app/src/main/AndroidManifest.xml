@@ -12,10 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TestActivity"></activity>
-        <activity android:name=".DetailUpdateTutorActivity" />
-        <activity android:name=".UpdateTutorActivity" />
-        <activity android:name=".View.InsertTutor.InsertTutorActivity" />
+        <activity android:name=".TestActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity android:name=".View.DetailUpdateTutor.DetailUpdateTutorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".UpdateTutorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+        <activity android:name=".View.InsertTutor.InsertTutorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".CourseActivity"
             android:screenOrientation="portrait"

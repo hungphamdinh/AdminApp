@@ -6,6 +6,15 @@ public class Tutor {
     String password;
     String experience;
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    String avatar;
     public Tutor(){}
     public String getEmail() {
         return email;

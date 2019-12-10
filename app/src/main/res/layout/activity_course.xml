@@ -22,7 +22,7 @@
         android:layout_marginLeft="5dp"
         android:layout_gravity="center_vertical"
         android:textColor="#fff"
-        android:text="CourseList"
+        android:text="Danh sách các khóa học"
         />
 </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

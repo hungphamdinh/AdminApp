@@ -1,15 +1,10 @@
-package com.example.adminapp;
+package com.example.adminapp.View.DetailUpdateTutor;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,22 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.example.adminapp.Common.Common;
-import com.example.adminapp.Model.Tutor;
 import com.example.adminapp.Presenter.DetailUpdateTutor.DetailTutorPresenter;
-import com.example.adminapp.View.DetailUpdateTutor.IDetailTutorView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.adminapp.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
@@ -200,5 +183,6 @@ public class DetailUpdateTutorActivity extends AppCompatActivity implements IDet
         edtPass.setText(map.get("password").toString());
         edtExp.setText(map.get("exp").toString());
         edtEmail.setText(map.get("email").toString());
+        edtProfile.setText(map.get("image").toString());
     }
 }

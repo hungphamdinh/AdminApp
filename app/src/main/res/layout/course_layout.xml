@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="@color/colorPrimary"
+            android:background="#fff"
             android:orientation="vertical">
 
 
             <TextView
-                android:background="#000"
+                android:background="#666666"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCourseName"
@@ -22,7 +23,6 @@
                 android:textSize="20dp"
                 android:text="UserName"
                 android:textAlignment="center"
-                android:layout_marginTop="6dp"
                 android:textColor="#fff"
                 android:fontFamily="sans-serif-medium"
 
@@ -34,7 +34,7 @@
                 android:textStyle="italic"
                 android:textSize="20dp"
                 android:text="4543534"
-                android:textColor="#fff"
+                android:textColor="#666666"
                 android:layout_marginTop="6dp"
                 android:fontFamily="sans-serif-medium"
                 />
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTutorName"
-                android:textColor="#fff"
+                android:textColor="#666666"
                 android:textStyle="italic"
                 android:text="Address"
                 android:layout_marginTop="6dp"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCourseDescript"
                 android:textStyle="italic"
-                android:textColor="#fff"
+                android:textColor="#666666"
                 android:text="Address"
                 android:layout_marginTop="6dp"
                 android:maxLines="2"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tài liệu giảng dạy: "
-                    android:textColor="#fff"
+                    android:textColor="#666666"
                     android:textSize="20dp"
                     />
                 <TextView
@@ -79,7 +79,7 @@
                     android:textStyle="italic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#fff"
+                    android:textColor="#666666"
                     android:id="@+id/txtCourseDoc"
                     />
             </LinearLayout>
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
+                android:textColor="#666666"
                 android:textStyle="italic"
                 android:text="..."
                 android:fontFamily="sans-serif-medium"

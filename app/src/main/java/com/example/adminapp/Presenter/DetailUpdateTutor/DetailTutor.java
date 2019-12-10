@@ -4,8 +4,6 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.example.adminapp.Common.Common;
-import com.example.adminapp.DetailUpdateTutorActivity;
 import com.example.adminapp.Model.Tutor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +37,7 @@ public class DetailTutor {
                 firebaseMap.put("exp", tutor.getExperience());
                 firebaseMap.put("email", tutor.getEmail());
                 firebaseMap.put("password", tutor.getPassword());
+                firebaseMap.put("image",tutor.getAvatar());
                 detailUpdateTutorListener.onLoadData(firebaseMap);
 
                 //      }
