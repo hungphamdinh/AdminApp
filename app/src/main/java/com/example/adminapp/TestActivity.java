@@ -74,13 +74,15 @@ public class TestActivity extends AppCompatActivity {
                 ArrayList<String> docKey=new ArrayList<>();
                 for (DataSnapshot childSnap : dataSnapshot.getChildren()){
                     Doc doc=childSnap.getValue(Doc.class);
+                    if(doc.getCourseId().equals(docId)) {
 //                    if(doc.getType().equals("test")) {
                         docList.add(doc);
                         docKey.add(childSnap.getKey());
 
-                        testAdapter = new TestAdapter(TestActivity.this, docList,docKey);
+                        testAdapter = new TestAdapter(TestActivity.this, docList, docKey);
                         recyclerView.setAdapter(testAdapter);
-                    //}
+                        //}
+                    }
                 }
             }
 
@@ -92,7 +94,8 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void setData(String docId) {
-        if(edtName.equals("")&&edtTest.equals("")){
+        String formPatter = "https://+forms\\.+gle+/+[a-zA-Z0-9._-]+";
+        if(edtName.getText().toString().equals("")&&edtTest.getText().toString().equals("")||!edtTest.getText().toString().trim().matches(formPatter)){
             Toast.makeText(TestActivity.this,"Lỗi",Toast.LENGTH_SHORT).show();
         }
         else {
