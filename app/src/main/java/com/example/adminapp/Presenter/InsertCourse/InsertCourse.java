@@ -25,7 +25,34 @@ public class InsertCourse {
     public InsertCourse(InsertCourseListener insertCourseListener){
         this.insertCourseListener=insertCourseListener;
     }
-    public void insertCourse(HashMap<String,Object>edtMap, final Uri pdfUri){
+    public void onInsert(final HashMap<String, Object> listData) {
+        final Uri imageUri = (Uri) listData.get("imageUri");
+        final String fileName = System.currentTimeMillis() + "";
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("/Image/").child(fileName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                String url = taskSnapshot.getDownloadUrl().toString();
+                // map.put("courseId", key);
+
+                insertCourse(listData,url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                insertCourseListener.onFailed("Tải file lên thất bại");
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // int currentProgress=(int)(100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                // progressDialog.setProgress(currentProgress);
+            }
+        });
+//                            courseRef.child(courseId).updateChildren(orderMap);
+        //    updateDetailListener.onSuccess("Thay đổi thành công");
+    }
+    private void insertCourse(HashMap<String,Object>edtMap,final String imageUri){
         final DatabaseReference courseRef= FirebaseDatabase.getInstance().getReference("Course");
                 final String nameTemp=edtMap.get("name").toString();
                 final String priceTemp=edtMap.get("price").toString();
@@ -33,6 +60,8 @@ public class InsertCourse {
                 final String scheduleTemp=edtMap.get("schedule").toString();
                 final String descriptTemp=edtMap.get("descript").toString();
                 final String phoneTemp=edtMap.get("phone").toString();
+                final Uri pdfUri= (Uri) edtMap.get("pdf");
+
 //                final String docTemp=edtCourse.getText().toString();
                 DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
                 tutorRef.addValueEventListener(new ValueEventListener() {
@@ -49,6 +78,7 @@ public class InsertCourse {
                             HashMap<String, String> map = new HashMap<>();
                             //User user = new User(usernameTemp, passwordTemp,"");
                             map.put("courseName", nameTemp);
+                            map.put("image",imageUri);
                             map.put("descript", descriptTemp);
                             map.put("discount", discountTemp);
                             map.put("schedule", scheduleTemp);

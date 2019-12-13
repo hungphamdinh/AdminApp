@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.adminapp.Common.Common;
 import com.example.adminapp.Presenter.InsertCourse.InsertCoursePresenter;
 import com.example.adminapp.R;
 import com.example.adminapp.TestActivity;
@@ -26,9 +27,9 @@ import java.util.HashMap;
 
 public class InsertCourseActivity extends AppCompatActivity implements IInsertCourseView{
     private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourse;
-    private Button btnInsert,btnChooseFile,btnUploadFile;
+    private Button btnInsert,btnChooseFile,btnUploadFile,btnImage;
     private DatabaseReference courseRef;
-    private Uri pdfUri;
+    private Uri pdfUri,imageUri;
     private ProgressDialog progressDialog;
     private InsertCoursePresenter insertCoursePresenter;
     @Override
@@ -42,11 +43,13 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
         edtDescript=(EditText)findViewById(R.id.edtCourseDescript);
         edtPhone=(EditText)findViewById(R.id.edtCoursePhone);
         btnInsert=(Button)findViewById(R.id.btnInsert);
+        btnImage=(Button)findViewById(R.id.btnChooseImageInsert);
         edtCourse=(EditText)findViewById(R.id.edtCourseDoc);
         btnChooseFile=(Button)findViewById(R.id.btnChooseFile);
         insertCoursePresenter=new InsertCoursePresenter(this);
         btnInsert.setEnabled(false);
-
+        btnImage.setEnabled(false);
+        onClickChooseImage();
         chooseFilePdf();
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,10 +61,18 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
                 edtMap.put("schedule",edtSchedule.getText().toString());
                 edtMap.put("discount",edtDiscount.getText().toString());
                 edtMap.put("phone",edtPhone.getText().toString());
+                edtMap.put("imageUri",imageUri);
+                edtMap.put("pdf",pdfUri);
                 progressDialog=getDialog();
                 insertCoursePresenter.loadCourse(edtMap,pdfUri);
             }
         });
+    }
+    private void chooseImage() {
+        Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), Common.PICK_IMAGE_REQUEST);
     }
 
     private void chooseFilePdf() {
@@ -100,9 +111,18 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
         if(requestCode==9&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
         {
             selectPdf();
+            //chooseImage();
         }
         else
             Toast.makeText(InsertCourseActivity.this,"Provide pemrission",Toast.LENGTH_SHORT).show();
+    }
+    private void onClickChooseImage() {
+        btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
     }
 
     @Override
@@ -111,9 +131,15 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
         if(requestCode==86&&resultCode==RESULT_OK&&data!=null){
             pdfUri=data.getData();
             //edtCourse.setText(data.getData().getLastPathSegment());
+            btnImage.setEnabled(true);
+        }
+        else if(requestCode==Common.PICK_IMAGE_REQUEST&&resultCode==RESULT_OK&&data!=null){
+            imageUri=data.getData();
+            //edtImage.setText(data.getData().getLastPathSegment());
             btnInsert.setEnabled(true);
         }
         else{
+            btnInsert.setEnabled(false);
             Toast.makeText(InsertCourseActivity.this,"Chọn file mà bạn muốn",Toast.LENGTH_SHORT).show();
         }
     }

@@ -14,7 +14,7 @@ public class InsertCoursePresenter implements InsertCourseListener{
         mainInterator=new InsertCourse(this);
     }
     public void loadCourse(HashMap<String,Object>editMap, Uri uri){
-        mainInterator.insertCourse(editMap,uri);
+        mainInterator.onInsert(editMap);
     }
     @Override
     public void onSuccess(String msg) {

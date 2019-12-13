@@ -9,8 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".View.InsertCourse.InsertCourseActivity"
-        android:gravity="center"
-        android:layout_gravity="center"
         android:orientation="vertical"
         >
         <EditText
@@ -71,6 +69,27 @@
                 android:layout_height="wrap_content"
                 android:text="Chọn file"
                 android:id="@+id/btnChooseFile"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Hình ảnh"
+                android:id="@+id/edtImageInsert">
+
+            </EditText>
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Chọn hình ảnh"
+                android:id="@+id/btnChooseImageInsert"
                 />
         </LinearLayout>
         <Button

@@ -34,7 +34,6 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
     private String courseID;
     private Uri pdfUri,imageUri;
     private ProgressDialog progressDialog;
-    private String docKey;
     private UpdateDetailCoursePresenter updateDetailCoursePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +53,14 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
         HashMap<String,Object>edtMap=new HashMap<>();
         btnUpdate=(Button)findViewById(R.id.btnUpdate);
         if (getIntent() != null) {
-            courseDetailList = getIntent().getStringArrayListExtra("DetailList");
+            courseID = getIntent().getStringExtra("DetailList");
 
         }
-        if (!courseDetailList.isEmpty() && courseDetailList != null) {
+        if (!courseID.isEmpty() && courseID != null) {
             if (Common.isConnectedToInternet(this)) {
-                courseID=courseDetailList.get(0);
-                docKey =courseDetailList.get(1);
                 updateDetailCoursePresenter=new UpdateDetailCoursePresenter(DetailUpdateCourseActivity.this);
                 updateDetailCoursePresenter.LoadDataCourse(courseID);
+                updateDetailCoursePresenter.onLoadDoc(courseID);
                 setEdtMap(edtMap);
                 onClickChooseImage();
                 chooseFilePdf();
@@ -85,9 +83,8 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
                 edtMap.put("descript",edtDescript.getText().toString());
                 edtMap.put("courseDoc",edtCourseDoc.getText().toString());
                 edtMap.put("phone",edtPhone.getText().toString());
-                edtMap.put("imageUrl",imageUri);
-                edtMap.put("pdfUrl",pdfUri);
-                edtMap.put("docKey",docKey);
+                edtMap.put("imageUri",imageUri);
+                edtMap.put("pdfUri",pdfUri);
                 updateDetailCoursePresenter.onClickUpdate(courseID,edtMap);
             }
         });
@@ -123,9 +120,9 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
 
     private ProgressDialog openDialog() {
         progressDialog=new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setTitle("Đang tải...");
-        progressDialog.setProgress(0);
+        //progressDialog.setProgress(0);
         progressDialog.show();
         return progressDialog;
     }

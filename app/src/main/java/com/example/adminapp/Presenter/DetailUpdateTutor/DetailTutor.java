@@ -55,7 +55,7 @@ public class DetailTutor {
 
     public void setData(final HashMap<String, Object> edtMap, final String phoneKey) {
         DatabaseReference table_user=FirebaseDatabase.getInstance().getReference("Tutor");
-        table_user.child(phoneKey).addValueEventListener(new ValueEventListener() {
+        table_user.child(phoneKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final String emailPattern = "[a-zA-Z0-9._-]+@gmail+\\.+com+";

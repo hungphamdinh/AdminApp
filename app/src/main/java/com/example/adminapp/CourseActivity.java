@@ -93,10 +93,10 @@ public class CourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 Intent intent = new Intent(CourseActivity.this, DetailUpdateCourseActivity.class);
-                ArrayList<String> listIntent = new ArrayList<>();
-                listIntent.add(key);
-                listIntent.add(docKey);
-                intent.putStringArrayListExtra("DetailList", listIntent);
+//                ArrayList<String> listIntent = new ArrayList<>();
+//                listIntent.add(key);
+            //    listIntent.add(docKey);
+                intent.putExtra("DetailList", key);
                 //intent.putExtra("DetailList", (Parcelable) listIntent);
                 startActivity(intent);
             }
@@ -104,25 +104,62 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(final MenuItem item) {
         if (item.getTitle().equals(Common.UPDATE)) {
           //  setOnClickItem(item.getOrder(),docKey);
             // showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         }
         else {
-            deleteCourse(adapter.getRef(item.getOrder()).getKey());
+            DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
+            docRef.orderByChild("courseId").equalTo(adapter.getRef(item.getOrder()).getKey()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
+                        Doc doc = childSnap.getValue(Doc.class);
+                        docKey=childSnap.getKey();
+                        deletDoc(docKey);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
+        deleteCourse(adapter.getRef(item.getOrder()).getKey());
         return super.onContextItemSelected(item);
 
     }
+    private void deletDoc(String key) {
+        try {
+            if(key!=null) {
+                DatabaseReference doc=FirebaseDatabase.getInstance().getReference("Doc");
+                doc.child(key).removeValue();
+            }
+            else {
+                recyclerMenu.setVisibility(View.INVISIBLE);
+            }
+        }
+        catch (Exception ex){
+            Log.e("Error",ex.getMessage());
+        }
 
+    }
     private void deleteCourse(String key) {
-        if(key!=null){
-            course.child(key).removeValue();
+        try {
+            if(key!=null) {
+                course.child(key).removeValue();
+            }
+            else {
+                recyclerMenu.setVisibility(View.INVISIBLE);
+            }
         }
-        else{
-            Log.e("Error key",key);
+        catch (Exception ex){
+            Log.e("Error",ex.getMessage());
         }
+
     }
 }
 

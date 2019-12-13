@@ -11,8 +11,10 @@ public class UpdateDetailCoursePresenter implements UpdateDetailListener {
         this.updateView=updateView;
         this.mainInterator =new UpdateDetailCourse(this);
     }
-    public void onClickUpdate(String courseId,HashMap<String,Object>map){
+    public void onLoadDoc(String courseId){
         mainInterator.loadDetailDoc(courseId);
+    }
+    public void onClickUpdate(String courseId,HashMap<String,Object>map){
         mainInterator.onCheckImage(courseId,map);
 
     }

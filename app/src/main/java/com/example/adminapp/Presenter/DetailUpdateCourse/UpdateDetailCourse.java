@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 public class UpdateDetailCourse {
     private UpdateDetailListener updateDetailListener;
+    private String docKeyy;
     public UpdateDetailCourse(UpdateDetailListener updateDetailListener) {
         this.updateDetailListener=updateDetailListener;
     }
@@ -60,10 +61,10 @@ public class UpdateDetailCourse {
                 final String descriptTemp = edtMap.get("descript").toString();
                 final String phoneTemp = edtMap.get("phone").toString();
                 final String imageTemp=edtMap.get("edtImage").toString();
-                final String courseDoc=edtMap.get("courseDoc").toString();
+                //final String courseDoc=edtMap.get("courseDoc").toString();
                 final Uri imageUri= (Uri) edtMap.get("imageUri");
                 Uri pdfUri= (Uri) edtMap.get("pdfUri");
-                String docKey=edtMap.get("docKey").toString();
+                //String docKey=edtMap.get("docKey").toString();
                 final HashMap<String, Object> listData = new HashMap<>();
                 listData.put("name", nameTemp);
                 listData.put("descript", descriptTemp);
@@ -72,16 +73,34 @@ public class UpdateDetailCourse {
                 listData.put("schedule", scheduleTemp);
                 listData.put("phone", phoneTemp);
                 listData.put("courseId", courseId);
-                listData.put("courseDoc",courseDoc);
                 listData.put("imageUri",imageUri);
                 listData.put("pdfUri",pdfUri);
-                listData.put("docKey",docKey);
+                final DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
+                docRef.orderByChild("courseId").equalTo(courseId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnap:dataSnapshot.getChildren()){
+                            Doc doc=childSnap.getValue(Doc.class);
+                            if(doc.getType().equals("doc")) {
+                                docKeyy = childSnap.getKey();
+                                listData.put("courseDoc", doc.getDocName());
+                                listData.put("docKey", docKeyy);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
         final DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
         tutorRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (nameTemp.equals("") || priceTemp.equals("") || discountTemp.equals("") || scheduleTemp.equals("")
-                        || descriptTemp.equals("") || phoneTemp.equals("") || courseDoc.equals("")) {
+                        || descriptTemp.equals("") || phoneTemp.equals("")) {
                     updateDetailListener.onFailed("Vui lòng kiểm tra lại thông tin");
                 }
                 else if (!dataSnapshot.child(phoneTemp).exists()) {
@@ -129,7 +148,7 @@ public class UpdateDetailCourse {
                     }
                 });
 //                            courseRef.child(courseId).updateChildren(orderMap);
-                updateDetailListener.onSuccess("Thay đổi thành công");
+            //    updateDetailListener.onSuccess("Thay đổi thành công");
     }
 
     private void setDataToFirebase(String url,HashMap<String,Object>listData) {
@@ -158,10 +177,9 @@ public class UpdateDetailCourse {
     }
     private void uploadDoc(HashMap<String,Object>listData) {
         final Uri pdfUri= (Uri) listData.get("pdfUri");
-        final String docKey=listData.get("docKey").toString();
         if(pdfUri!=null){
             upLoadToStorage(listData);
-            updateDetailListener.onSuccess("Tải lên thành công");
+           // updateDetailListener.onSuccess("Tải lên thành công");
         }
         else
             updateDetailListener.onFailed("Chưa chọn file");
@@ -215,9 +233,9 @@ public class UpdateDetailCourse {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot childSnap:dataSnapshot.getChildren()){
                     Doc doc=childSnap.getValue(Doc.class);
-                    listData.put("name",doc.getDocName());
                     if(doc.getType().equals("doc")) {
                         listData.put("url", doc.getDocUrl());
+                        listData.put("name",doc.getDocName());
                         updateDetailListener.onLoadCourseDoc(listData);
                     }
                 }

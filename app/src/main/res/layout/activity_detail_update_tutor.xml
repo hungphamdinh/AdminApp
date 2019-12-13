@@ -47,19 +47,20 @@
             android:orientation="horizontal"
             >
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Hình ảnh"
                 android:id="@+id/edtProfile"
                 android:inputType="phone"
                 />
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:hint="Chọn file"
-                android:id="@+id/btnUpdateFile"
-                />
+
         </LinearLayout>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Chọn file"
+            android:id="@+id/btnUpdateFile"
+            />
         <Button
             android:layout_width="200dp"
             android:layout_height="wrap_content"
