@@ -7,14 +7,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adminapp.Common.Common;
@@ -27,6 +32,7 @@ import java.util.HashMap;
 
 public class InsertCourseActivity extends AppCompatActivity implements IInsertCourseView{
     private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourse;
+    private TextView txtDateEnd,txtDateBegin;
     private Button btnInsert,btnChooseFile,btnUploadFile,btnImage;
     private DatabaseReference courseRef;
     private Uri pdfUri,imageUri;
@@ -45,12 +51,16 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
         btnInsert=(Button)findViewById(R.id.btnInsert);
         btnImage=(Button)findViewById(R.id.btnChooseImageInsert);
         edtCourse=(EditText)findViewById(R.id.edtCourseDoc);
+        txtDateEnd=(TextView) findViewById(R.id.txtDateEnd);
+        txtDateBegin=(TextView) findViewById(R.id.txtDateBeign);
         btnChooseFile=(Button)findViewById(R.id.btnChooseFile);
         insertCoursePresenter=new InsertCoursePresenter(this);
         btnInsert.setEnabled(false);
         btnImage.setEnabled(false);
         onClickChooseImage();
         chooseFilePdf();
+        setDateEnd(txtDateEnd);
+        setDateBegin(txtDateBegin);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,12 +72,31 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
                 edtMap.put("discount",edtDiscount.getText().toString());
                 edtMap.put("phone",edtPhone.getText().toString());
                 edtMap.put("imageUri",imageUri);
+                edtMap.put("dateBegin",txtDateBegin.getText().toString());
+                edtMap.put("dateEnd",txtDateEnd.getText().toString());
                 edtMap.put("pdf",pdfUri);
                 progressDialog=getDialog();
                 insertCoursePresenter.loadCourse(edtMap,pdfUri);
             }
         });
     }
+    private void setDateBegin(TextView txtDateBegin) {
+        txtDateBegin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateBegin();
+            }
+        });
+    }
+    private void setDateEnd(TextView txtDateEnd) {
+        txtDateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateEnd();
+            }
+        });
+    }
+
     private void chooseImage() {
         Intent intent=new Intent();
         intent.setType("image/*");
@@ -167,5 +196,69 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
     @Override
     public void onLoadDing(int percent) {
         progressDialog.setProgress(percent);
+    }
+    private void showDateEnd() {
+        LayoutInflater inflater=LayoutInflater.from(this);
+        View subView=inflater.inflate(R.layout.alert_calendar_view,null);
+        final CalendarView calendarView=(CalendarView)subView.findViewById(R.id.calendarView);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Lịch");
+        alertDialog.setMessage("Chọn ngày bạn muốn");
+        //alertDialog.create();
+        alertDialog.setView(subView);
+        //alertDialog.show();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                int d = dayOfMonth;
+                String curDate =String.valueOf(d);
+                int y = year;
+                String curYear =String.valueOf(y);
+                int m = month;
+                String curMonth =String.valueOf(m);
+                txtDateEnd.setText(curDate+"/"+curMonth+"/"+curYear);
+            }
+        });
+        alertDialog.setNegativeButton("Chọn", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+    private void showDateBegin() {
+        LayoutInflater inflater=LayoutInflater.from(this);
+        View subView=inflater.inflate(R.layout.alert_calendar_view,null);
+        final CalendarView calendarView=(CalendarView)subView.findViewById(R.id.calendarView);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Lịch");
+        alertDialog.setMessage("Chọn ngày bạn muốn");
+        //alertDialog.create();
+        alertDialog.setView(subView);
+        //alertDialog.show();
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+                    @Override
+                    public void onSelectedDayChange(CalendarView view, int year, int month,
+                                                    int dayOfMonth) {
+                        int d = dayOfMonth;
+                        String curDate =String.valueOf(d);
+                        int y = year;
+                        String curYear =String.valueOf(y);
+                        int m = month;
+                        String curMonth =String.valueOf(m);
+                        txtDateBegin.setText(curDate+"/"+curMonth+"/"+curYear);
+                    }
+                });
+        alertDialog.setNegativeButton("Chọn", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

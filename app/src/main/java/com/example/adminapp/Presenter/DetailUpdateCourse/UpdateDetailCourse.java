@@ -43,6 +43,8 @@ public class UpdateDetailCourse {
                 edtMap.put("schedule",course.getSchedule());
                 edtMap.put("phone",course.getTutorPhone());
                 edtMap.put("image",course.getImage());
+                edtMap.put("begin",course.getBegin());
+                edtMap.put("end",course.getEnd());
                 updateDetailListener.onLoadData(edtMap);
 
             }
@@ -61,6 +63,8 @@ public class UpdateDetailCourse {
                 final String descriptTemp = edtMap.get("descript").toString();
                 final String phoneTemp = edtMap.get("phone").toString();
                 final String imageTemp=edtMap.get("edtImage").toString();
+                final String dateBeginTemp=edtMap.get("dateBegin").toString();
+                final String dateEndTemp=edtMap.get("dateEnd").toString();
                 //final String courseDoc=edtMap.get("courseDoc").toString();
                 final Uri imageUri= (Uri) edtMap.get("imageUri");
                 Uri pdfUri= (Uri) edtMap.get("pdfUri");
@@ -75,6 +79,8 @@ public class UpdateDetailCourse {
                 listData.put("courseId", courseId);
                 listData.put("imageUri",imageUri);
                 listData.put("pdfUri",pdfUri);
+                listData.put("dateBegin",dateBeginTemp);
+                listData.put("dateEnd",dateEndTemp);
                 final DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
                 docRef.orderByChild("courseId").equalTo(courseId).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -160,6 +166,8 @@ public class UpdateDetailCourse {
         orderMap.put("price", listData.get("price"));
         orderMap.put("schedule", listData.get("schedule"));
         orderMap.put("tutorPhone", listData.get("phone"));
+        orderMap.put("begin",listData.get("dateBegin"));
+        orderMap.put("end",listData.get("dateEnd"));
         DatabaseReference courseRef= FirebaseDatabase.getInstance().getReference("Course");
         courseRef.child(listData.get("courseId").toString()).updateChildren(orderMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

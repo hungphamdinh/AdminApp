@@ -147,6 +147,7 @@ public class CourseActivity extends AppCompatActivity {
         }
 
     }
+
     private void deleteCourse(String key) {
         try {
             if(key!=null) {

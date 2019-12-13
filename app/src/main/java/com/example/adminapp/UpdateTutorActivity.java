@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
@@ -80,10 +83,32 @@ public class UpdateTutorActivity extends AppCompatActivity {
     }
     private void deleteCourse(String key) {
         if(key!=null){
-            tutorRef.child(key).removeValue();
+            deleteDialog(key);
         }
         else{
             Log.e("Error key",key);
         }
+    }
+    private void deleteDialog(final String key) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Xóa");
+        alertDialog.setMessage("Bạn có chắc muốn xóa?");
+        //alertDialog.create();
+        //alertDialog.show();
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                tutorRef.child(key).removeValue();
+                Toast.makeText(UpdateTutorActivity.this,"Xóa thành công",Toast.LENGTH_SHORT).show();
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }

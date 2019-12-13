@@ -6,6 +6,24 @@ public class Course {
     private String discount;
     private String price;
 
+    public String getBegin() {
+        return begin;
+    }
+
+    public void setBegin(String begin) {
+        this.begin = begin;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    private String begin;
+    private String end;
     public String getImage() {
         return image;
     }

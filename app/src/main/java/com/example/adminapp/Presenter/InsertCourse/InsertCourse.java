@@ -60,7 +60,9 @@ public class InsertCourse {
                 final String scheduleTemp=edtMap.get("schedule").toString();
                 final String descriptTemp=edtMap.get("descript").toString();
                 final String phoneTemp=edtMap.get("phone").toString();
-                final Uri pdfUri= (Uri) edtMap.get("pdf");
+                final String dateBeTemp=edtMap.get("dateBegin").toString();
+                final String dateEndTemp=edtMap.get("dateEnd").toString();
+                 final Uri pdfUri= (Uri) edtMap.get("pdf");
 
 //                final String docTemp=edtCourse.getText().toString();
                 DatabaseReference tutorRef=FirebaseDatabase.getInstance().getReference("Tutor");
@@ -68,7 +70,8 @@ public class InsertCourse {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(nameTemp.equals("")||priceTemp.equals("")||discountTemp.equals("")||scheduleTemp.equals("")
-                                ||descriptTemp.equals("")||phoneTemp.equals("")){
+                                ||descriptTemp.equals("")||phoneTemp.equals("")
+                                ||dateBeTemp.equals("Nhấn để chọn ngày bắt đầu")||dateEndTemp.equals("Nhấn để chọn ngày kết thúc")){
                             insertCourseListener.onFailed("Kiểm tra lại thông tin");
                         }
                         else if(!dataSnapshot.child(phoneTemp).exists()){
@@ -85,6 +88,8 @@ public class InsertCourse {
                             map.put("price", priceTemp);
                             map.put("tutorPhone", phoneTemp);
                             map.put("isBuy", "false");
+                            map.put("begin",dateBeTemp);
+                            map.put("end",dateEndTemp);
                             courseRef.push().setValue(map);
                             //   edtName.setText(dataSnapshot.child(phoneTemp).toString());
                             insertCourseListener.onSuccess("Thêm thành công");

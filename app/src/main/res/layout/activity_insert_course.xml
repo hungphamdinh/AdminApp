@@ -92,11 +92,37 @@
                 android:id="@+id/btnChooseImageInsert"
                 />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:weightSum="10"
+            >
+            <TextView
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Nhấn để chọn ngày bắt đầu"
+                android:textSize="16dp"
+                android:id="@+id/txtDateBeign"
+                />
+
+            <TextView
+                android:textSize="16dp"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Nhấn để chọn ngày kết thúc"
+                android:id="@+id/txtDateEnd"
+                />
+        </LinearLayout>
         <Button
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="Thêm "
             android:id="@+id/btnInsert"
             />
+
     </LinearLayout>
 </ScrollView>

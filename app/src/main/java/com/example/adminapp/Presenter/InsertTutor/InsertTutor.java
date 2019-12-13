@@ -24,7 +24,7 @@ public class InsertTutor {
             final String email = editText.get("email").toString();
             final String exp=editText.get("exp").toString();
             final String emailPattern = "[a-zA-Z0-9._-]+@gmail+\\.+com+";
-            if (userName.equals("") || pass.equals("") || phone.equals("") || email.equals("")||exp.equals("")) {
+            if (userName.equals("") || pass.equals("") || phone.equals("") || email.equals("")||exp.equals("")||userName.length()!=10) {
                 tutorListener.onFailer("Please check your inform");
             } else {
                 final boolean check = dataSnapshot.child(phone).exists();

@@ -7,14 +7,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adminapp.Common.Common;
@@ -30,6 +35,7 @@ import java.util.HashMap;
 public class DetailUpdateCourseActivity extends AppCompatActivity implements IDetailUpdateView{
     private EditText edtName,edtPrice,edtDiscount,edtSchedule,edtDescript,edtPhone,edtCourseDoc,edtImage;
     private Button btnUpdate,btnUpdateFile,btnChooseImage,btnUpdateTest;
+    private TextView txtDateEnd,txtDateBegin;
     private ArrayList<String> courseDetailList;
     private String courseID;
     private Uri pdfUri,imageUri;
@@ -47,6 +53,8 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
         edtDescript=(EditText)findViewById(R.id.edtCourseDescriptU);
         edtPhone=(EditText)findViewById(R.id.edtCoursePhoneU);
         edtCourseDoc=(EditText)findViewById(R.id.edtCourseDocName);
+        txtDateBegin=(TextView)findViewById(R.id.txtDateBeignUp);
+        txtDateEnd=(TextView)findViewById(R.id.txtDateEndUp);
         btnUpdateFile=(Button)findViewById(R.id.btnUpdateFile);
         btnChooseImage=(Button)findViewById(R.id.btnChooseImage);
         btnUpdateTest=(Button)findViewById(R.id.btnUpdateTest);
@@ -61,6 +69,8 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
                 updateDetailCoursePresenter=new UpdateDetailCoursePresenter(DetailUpdateCourseActivity.this);
                 updateDetailCoursePresenter.LoadDataCourse(courseID);
                 updateDetailCoursePresenter.onLoadDoc(courseID);
+                setDateBegin(txtDateBegin);
+                setDateEnd(txtDateEnd);
                 setEdtMap(edtMap);
                 onClickChooseImage();
                 chooseFilePdf();
@@ -69,7 +79,22 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
         }
 
     }
-
+    private void setDateBegin(TextView txtDateBegin) {
+        txtDateBegin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateBegin();
+            }
+        });
+    }
+    private void setDateEnd(TextView txtDateEnd) {
+        txtDateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDateEnd();
+            }
+        });
+    }
     private void setEdtMap(final HashMap<String, Object> edtMap) {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +110,8 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
                 edtMap.put("phone",edtPhone.getText().toString());
                 edtMap.put("imageUri",imageUri);
                 edtMap.put("pdfUri",pdfUri);
+                edtMap.put("dateBegin",txtDateBegin.getText().toString());
+                edtMap.put("dateEnd",txtDateEnd.getText().toString());
                 updateDetailCoursePresenter.onClickUpdate(courseID,edtMap);
             }
         });
@@ -214,5 +241,71 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
         edtSchedule.setText(data.get("schedule").toString());
         edtPhone.setText(data.get("phone").toString());
         edtImage.setText(data.get("image").toString());
+        txtDateBegin.setText(data.get("begin").toString());
+        txtDateEnd.setText(data.get("end").toString());
+    }
+    private void showDateEnd() {
+        LayoutInflater inflater=LayoutInflater.from(this);
+        View subView=inflater.inflate(R.layout.alert_calendar_view,null);
+        final CalendarView calendarView=(CalendarView)subView.findViewById(R.id.calendarView);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Lịch");
+        alertDialog.setMessage("Chọn ngày bạn muốn");
+        //alertDialog.create();
+        alertDialog.setView(subView);
+        //alertDialog.show();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                int d = dayOfMonth;
+                String curDate =String.valueOf(d);
+                int y = year;
+                String curYear =String.valueOf(y);
+                int m = month;
+                String curMonth =String.valueOf(m);
+                txtDateEnd.setText(curDate+"/"+curMonth+"/"+curYear);
+            }
+        });
+        alertDialog.setNegativeButton("Chọn", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+    private void showDateBegin() {
+        LayoutInflater inflater=LayoutInflater.from(this);
+        View subView=inflater.inflate(R.layout.alert_calendar_view,null);
+        final CalendarView calendarView=(CalendarView)subView.findViewById(R.id.calendarView);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Lịch");
+        alertDialog.setMessage("Chọn ngày bạn muốn");
+        //alertDialog.create();
+        alertDialog.setView(subView);
+        //alertDialog.show();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                int d = dayOfMonth;
+                String curDate =String.valueOf(d);
+                int y = year;
+                String curYear =String.valueOf(y);
+                int m = month;
+                String curMonth =String.valueOf(m);
+                txtDateBegin.setText(curDate+"/"+curMonth+"/"+curYear);
+            }
+        });
+        alertDialog.setNegativeButton("Chọn", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }
