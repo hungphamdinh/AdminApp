@@ -34,19 +34,23 @@ public class UpdateDetailCourse {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Course course = dataSnapshot.getValue(Course.class);
-                //Picasso.with(getBaseContext()).load(curentFood.getImage()).into(foodImage);
-                HashMap<String,Object>edtMap=new HashMap<>();
-                edtMap.put("name",course.getCourseName());
-                edtMap.put("price",course.getPrice());
-                edtMap.put("descript",course.getDescript());
-                edtMap.put("discount",course.getDiscount());
-                edtMap.put("schedule",course.getSchedule());
-                edtMap.put("phone",course.getTutorPhone());
-                edtMap.put("image",course.getImage());
-                edtMap.put("begin",course.getBegin());
-                edtMap.put("end",course.getEnd());
-                updateDetailListener.onLoadData(edtMap);
-
+                if(course==null){
+                    updateDetailListener.onNullItem("Khóa học rỗng");
+                }
+                else {
+                    //Picasso.with(getBaseContext()).load(curentFood.getImage()).into(foodImage);
+                    HashMap<String, Object> edtMap = new HashMap<>();
+                    edtMap.put("name", course.getCourseName());
+                    edtMap.put("price", course.getPrice());
+                    edtMap.put("descript", course.getDescript());
+                    edtMap.put("discount", course.getDiscount());
+                    edtMap.put("schedule", course.getSchedule());
+                    edtMap.put("phone", course.getTutorPhone());
+                    edtMap.put("image", course.getImage());
+                    edtMap.put("begin", course.getBegin());
+                    edtMap.put("end", course.getEnd());
+                    updateDetailListener.onLoadData(edtMap);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

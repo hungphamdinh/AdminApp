@@ -242,6 +242,12 @@ public class DetailUpdateCourseActivity extends AppCompatActivity implements IDe
         txtDateBegin.setText(data.get("begin").toString());
         txtDateEnd.setText(data.get("end").toString());
     }
+
+    @Override
+    public void onNullItem(String msg) {
+        Toast.makeText(DetailUpdateCourseActivity.this,msg,Toast.LENGTH_SHORT).show();
+    }
+
     private void showDateEnd() {
         LayoutInflater inflater=LayoutInflater.from(this);
         View subView=inflater.inflate(R.layout.alert_calendar_view,null);

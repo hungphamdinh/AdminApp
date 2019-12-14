@@ -14,6 +14,7 @@
     android:layout_weight="2"
     android:layout_height="0dp"
     android:orientation="vertical">
+
     <TextView
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -25,12 +26,28 @@
         android:text="Danh sách các khóa học"
         />
 </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
-        android:layout_marginTop="10dp"
-        android:id="@+id/listCourse"
+        android:orientation="vertical"
         >
-    </androidx.recyclerview.widget.RecyclerView>
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_bar"
+            android:layout_alignParentTop="true"
+            app:mt_hint="Enter your food"
+            app:mt_speechMode="false"
+            >
+        </com.mancj.materialsearchbar.MaterialSearchBar>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/listCourse"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
 </LinearLayout>

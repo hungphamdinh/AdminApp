@@ -47,5 +47,10 @@ public class UpdateDetailCoursePresenter implements UpdateDetailListener {
         updateView.onLoadCourseDoc(data);
     }
 
+    @Override
+    public void onNullItem(String msg) {
+        updateView.onNullItem(msg);
+    }
+
 
 }

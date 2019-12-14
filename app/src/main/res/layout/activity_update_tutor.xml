@@ -29,8 +29,18 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="8"
+        android:orientation="vertical"
             android:layout_height="0dp">
             <!-- TODO: Update blank fragment layout -->
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_barUp"
+            android:layout_alignParentTop="true"
+            app:mt_hint="Enter your food"
+            app:mt_speechMode="false"
+            >
+        </com.mancj.materialsearchbar.MaterialSearchBar>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

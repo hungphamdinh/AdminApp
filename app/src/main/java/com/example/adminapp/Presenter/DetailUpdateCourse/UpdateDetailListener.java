@@ -8,4 +8,5 @@ public interface UpdateDetailListener {
     void onLoading(int percent);
     void onLoadData(HashMap<String,Object>data);
     void onLoadCourseDoc(HashMap<String,Object>data);
+    void onNullItem(String msg);
 }
