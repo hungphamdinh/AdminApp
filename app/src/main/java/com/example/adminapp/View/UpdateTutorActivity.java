@@ -1,4 +1,4 @@
-package com.example.adminapp;
+package com.example.adminapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
 import com.example.adminapp.Model.Tutor;
+import com.example.adminapp.R;
 import com.example.adminapp.View.DetailUpdateTutor.DetailUpdateTutorActivity;
 import com.example.adminapp.ViewHolder.StaffViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;

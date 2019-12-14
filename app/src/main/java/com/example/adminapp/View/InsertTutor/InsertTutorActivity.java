@@ -50,6 +50,7 @@ public class InsertTutorActivity extends AppCompatActivity implements IInsertVie
     @Override
     public void onSuccess(String msg) {
         Toast.makeText(InsertTutorActivity.this,msg,Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

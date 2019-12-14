@@ -23,11 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adminapp.Common.Common;
-import com.example.adminapp.Model.Course;
-import com.example.adminapp.Model.Doc;
 import com.example.adminapp.Presenter.DetailUpdateCourse.UpdateDetailCoursePresenter;
 import com.example.adminapp.R;
-import com.example.adminapp.TestActivity;
+import com.example.adminapp.View.TestActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -207,6 +207,7 @@ public class UpdateDetailCourse {
                         // map.put("courseId", key);
                         map.put("docName", listData.get("courseDoc"));
                         map.put("docUrl", url);
+                        map.put("type","doc");
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Doc");
                         reference.child(key).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

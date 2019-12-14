@@ -1,4 +1,4 @@
-package com.example.adminapp;
+package com.example.adminapp.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
 import com.example.adminapp.Model.Course;
 import com.example.adminapp.Model.Doc;
+import com.example.adminapp.Model.Request;
+import com.example.adminapp.R;
 import com.example.adminapp.View.DetailUpdateCourse.DetailUpdateCourseActivity;
 import com.example.adminapp.ViewHolder.CourseViewHolder;
 
@@ -23,8 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class CourseActivity extends AppCompatActivity {
     private RecyclerView recyclerMenu;
@@ -110,28 +110,52 @@ public class CourseActivity extends AppCompatActivity {
             // showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         }
         else {
-            DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
-            docRef.orderByChild("courseId").equalTo(adapter.getRef(item.getOrder()).getKey()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
-                        Doc doc = childSnap.getValue(Doc.class);
-                        docKey=childSnap.getKey();
-                        deletDoc(docKey);
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+            onRequest(item);
+            onDoc(item);
         }
         deleteCourse(adapter.getRef(item.getOrder()).getKey());
         return super.onContextItemSelected(item);
 
     }
+
+    private void onDoc(MenuItem item) {
+        DatabaseReference docRef= FirebaseDatabase.getInstance().getReference("Doc");
+        docRef.orderByChild("courseId").equalTo(adapter.getRef(item.getOrder()).getKey()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
+                    Doc doc = childSnap.getValue(Doc.class);
+                    docKey=childSnap.getKey();
+                    deletDoc(docKey);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void onRequest(MenuItem item) {
+        DatabaseReference requestRef= FirebaseDatabase.getInstance().getReference("Requests");
+        requestRef.orderByChild("courseId").equalTo(adapter.getRef(item.getOrder()).getKey()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
+                    Request request = childSnap.getValue(Request.class);
+                    String requestKey=childSnap.getKey();
+                    deleteRequest(requestKey);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void deletDoc(String key) {
         try {
             if(key!=null) {
@@ -147,7 +171,22 @@ public class CourseActivity extends AppCompatActivity {
         }
 
     }
+    private void deleteRequest(final String key) {
+        try {
+            if(key!=null) {
+                DatabaseReference doc=FirebaseDatabase.getInstance().getReference("Requests");
+                        doc.child(key).removeValue();
 
+            }
+            else {
+                recyclerMenu.setVisibility(View.INVISIBLE);
+            }
+        }
+        catch (Exception ex){
+            Log.e("Error",ex.getMessage());
+        }
+
+    }
     private void deleteCourse(String key) {
         try {
             if(key!=null) {

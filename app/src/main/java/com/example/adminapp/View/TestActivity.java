@@ -1,4 +1,4 @@
-package com.example.adminapp;
+package com.example.adminapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +13,11 @@ import android.widget.Toast;
 import com.example.adminapp.Adapter.TestAdapter;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Model.Doc;
+import com.example.adminapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -79,7 +79,6 @@ public class TestActivity extends AppCompatActivity {
                     if(!doc.getType().equals("doc")) {
                         docList.add(doc);
                         docKey.add(childSnap.getKey());
-
                         testAdapter = new TestAdapter(TestActivity.this, docList, docKey);
                         recyclerView.setAdapter(testAdapter);
                         }

@@ -1,4 +1,4 @@
-package com.example.adminapp;
+package com.example.adminapp.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.adminapp.R;
 import com.example.adminapp.View.InsertCourse.InsertCourseActivity;
 import com.example.adminapp.View.InsertTutor.InsertTutorActivity;
 

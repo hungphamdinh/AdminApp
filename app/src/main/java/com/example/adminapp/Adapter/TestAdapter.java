@@ -20,9 +20,11 @@ import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
 import com.example.adminapp.Model.Doc;
 import com.example.adminapp.R;
-import com.example.adminapp.TestActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,22 +52,23 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.DocViewHolder>
     @Override
     public void onBindViewHolder(@NonNull final DocViewHolder holder, final int position) {
             holder.txtTestName.setText(doc.get(position).getDocName());
+
             holder.setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
-                    showUpdateDialog(position,docKey.get(position));
+                    showUpdateDialog(position, docKey.get(position));
                 }
             });
             holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deleteDialog(docKey.get(position));
+                    deleteDialog(docKey.get(position),holder);
                 }
             });
 
     }
 
-    private void deleteDialog(final String key) {
+    private void deleteDialog(final String key, final DocViewHolder holder) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle("Xóa");
         alertDialog.setMessage("Bạn có chắc muốn xóa?");
@@ -73,11 +76,28 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.DocViewHolder>
         //alertDialog.show();
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
-                docRef.child(key).removeValue();
-                Toast.makeText(context,"Xóa thành công",Toast.LENGTH_SHORT).show();
-                dialogInterface.dismiss();
+            public void onClick(final DialogInterface dialogInterface, int i) {
+                final DatabaseReference docRef=FirebaseDatabase.getInstance().getReference("Doc");
+                docRef.child(key).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Doc doc=dataSnapshot.getValue(Doc.class);
+                        if(doc==null){
+                            holder.itemView.setVisibility(View.GONE);
+                        }
+                        else {
+                            docRef.child(key).removeValue();
+                            Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                            dialogInterface.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {

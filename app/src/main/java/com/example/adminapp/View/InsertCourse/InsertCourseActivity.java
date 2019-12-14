@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Presenter.InsertCourse.InsertCoursePresenter;
 import com.example.adminapp.R;
-import com.example.adminapp.TestActivity;
+import com.example.adminapp.View.TestActivity;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
@@ -188,9 +188,10 @@ public class InsertCourseActivity extends AppCompatActivity implements IInsertCo
 
     @Override
     public void onSuccessUploadStorage(String courseId) {
-        Intent intent=new Intent(InsertCourseActivity.this,TestActivity.class);
-        intent.putExtra("courseID",courseId);
-        startActivity(intent);
+//        Intent intent=new Intent(InsertCourseActivity.this,TestActivity.class);
+//        intent.putExtra("courseID",courseId);
+//        startActivity(intent);
+        finish();
     }
 
     @Override

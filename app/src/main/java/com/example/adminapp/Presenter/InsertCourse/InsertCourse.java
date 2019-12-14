@@ -92,7 +92,7 @@ public class InsertCourse {
                             map.put("end",dateEndTemp);
                             courseRef.push().setValue(map);
                             //   edtName.setText(dataSnapshot.child(phoneTemp).toString());
-                            insertCourseListener.onSuccess("Thêm thành công");
+                            //insertCourseListener.onSuccess("Thêm thành công");
                             uploadDoc(pdfUri);
                         }
                     }
@@ -117,7 +117,7 @@ public class InsertCourse {
                     }
                     //            upLoadTest(key);
                     upLoadToStorage(pdfUri,key);
-                    insertCourseListener.onSuccess("Thêm tài liệu thành công");
+                    //insertCourseListener.onSuccess("Thêm tài liệu thành công");
                 }
 
                 @Override
