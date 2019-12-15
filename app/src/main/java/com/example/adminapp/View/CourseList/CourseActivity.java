@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +67,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
         setUpSearchBar();
 
     }
+
     private void setUpSearchBar() {
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
@@ -124,7 +127,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
                 viewHolder.txtDescript.setText(model.getDescript());
                 final Course local=model;
                 courseListPresenter.onLoadCourse(searchAdapter.getRef(position).getKey());
-
+                deleteCourse(searchAdapter.getRef(position).getKey(),viewHolder);
             }
         };
         recyclerMenu.setAdapter(searchAdapter);//Set adapter for RecycleView when search Result
@@ -160,6 +163,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
                 viewHolder.txtDescript.setText(model.getDescript());
                 courseListPresenter=new CourseListPresenter(CourseActivity.this,viewHolder);
                 courseListPresenter.onLoadCourse(adapter.getRef(position).getKey());
+                deleteCourse(adapter.getRef(position).getKey(),viewHolder);
 
             }
 
@@ -168,22 +172,20 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
         recyclerMenu.setAdapter(adapter);
     }
 
+    private void deleteCourse(final String key,CourseViewHolder holder) {
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteDialog(key);
 
-
-    @Override
-    public boolean onContextItemSelected(final MenuItem item) {
-        if (item.getTitle().equals(Common.UPDATE)) {
-          //  setOnClickItem(item.getOrder(),docKey);
-            // showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
-        }
-        else {
-                deleteDialog(adapter.getRef(item.getOrder()).getKey());
-        }
-        return super.onContextItemSelected(item);
-
+            }
+        });
     }
 
-//    private void deleteCourseIsBuy(final String key) {
+
+
+
+    //    private void deleteCourseIsBuy(final String key) {
 //        DatabaseReference requestRef= FirebaseDatabase.getInstance().getReference("Requests");
 //        requestRef.orderByChild("courseId").equalTo(key).addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -236,6 +238,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 courseListPresenter.onDelete(key);
+                suggestList.clear();
                 dialogInterface.dismiss();
             }
         });

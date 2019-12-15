@@ -121,6 +121,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
                 viewHolder.txtEmail.setText(model.getEmail());
                 //viewHolder.txtDescript.setText(model.getDescript());
                 final Tutor local=model;
+                deleteCourse(searchAdapter.getRef(position).getKey(),viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
@@ -163,6 +164,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
             protected void populateViewHolder(final StaffViewHolder viewHolder, final Tutor model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
+                deleteCourse(adapter.getRef(position).getKey(),viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
@@ -186,14 +188,18 @@ public class UpdateTutorActivity extends AppCompatActivity {
             // showUpdateDialog(adapter.getRef(item.getOrder()).getKey(),adapter.getItem(item.getOrder()));
         }
         else {
-            deleteCourse(adapter.getRef(item.getOrder()).getKey());
         }
         return super.onContextItemSelected(item);
 
     }
-    private void deleteCourse(String key) {
+    private void deleteCourse(final String key, StaffViewHolder holder) {
         if(key!=null){
-            deleteDialog(key);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteDialog(key);
+                }
+            });
         }
         else{
             Log.e("Error key",key);
@@ -210,6 +216,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 tutorRef.child(key).removeValue();
                 Toast.makeText(UpdateTutorActivity.this,"Xóa thành công",Toast.LENGTH_SHORT).show();
+                suggestList.clear();
                 dialogInterface.dismiss();
             }
         });
