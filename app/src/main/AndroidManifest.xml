@@ -19,7 +19,7 @@
         <activity android:name=".View.DetailUpdateTutor.DetailUpdateTutorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".View.UpdateTutorActivity"
+        <activity android:name=".View.TutorList.UpdateTutorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             />
@@ -27,7 +27,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".View.CourseActivity"
+            android:name=".View.CourseList.CourseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity

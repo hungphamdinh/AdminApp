@@ -1,4 +1,4 @@
-package com.example.adminapp.View;
+package com.example.adminapp.View.TutorList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,11 +17,9 @@ import android.widget.Toast;
 
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
-import com.example.adminapp.Model.Course;
 import com.example.adminapp.Model.Tutor;
 import com.example.adminapp.R;
 import com.example.adminapp.View.DetailUpdateTutor.DetailUpdateTutorActivity;
-import com.example.adminapp.ViewHolder.CourseViewHolder;
 import com.example.adminapp.ViewHolder.StaffViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +60,11 @@ public class UpdateTutorActivity extends AppCompatActivity {
         materialSearchBar.setLastSuggestions(suggestList);
         //materialSearchBar.setTextColor(Color.parseColor("#000"));
         materialSearchBar.setCardViewElevation(10);
+        setUpSearchBar();
+
+    }
+
+    private void setUpSearchBar() {
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -103,7 +106,6 @@ public class UpdateTutorActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void startSearch(CharSequence text) {

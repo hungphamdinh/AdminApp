@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.adminapp.View.CourseList.CourseActivity;
 import com.example.adminapp.R;
 import com.example.adminapp.View.InsertCourse.InsertCourseActivity;
 import com.example.adminapp.View.InsertTutor.InsertTutorActivity;
+import com.example.adminapp.View.TutorList.UpdateTutorActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnInsert, btnUpdate,btnInsertTutor,btnUpdateTutor;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdateTutor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,UpdateTutorActivity.class));
+                startActivity(new Intent(MainActivity.this, UpdateTutorActivity.class));
             }
         });
     }

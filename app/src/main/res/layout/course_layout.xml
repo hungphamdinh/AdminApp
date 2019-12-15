@@ -38,17 +38,6 @@
                 android:layout_marginTop="6dp"
                 android:fontFamily="sans-serif-medium"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtTutorName"
-                android:textColor="#666666"
-                android:textStyle="italic"
-                android:text="Address"
-                android:layout_marginTop="6dp"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="20dp"
-                />
 
             <TextView
                 android:layout_width="wrap_content"

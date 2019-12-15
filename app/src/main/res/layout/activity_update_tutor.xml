@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:weightSum="10"
     android:background="#666666"
-    tools:context=".View.CourseActivity"
+    tools:context=".View.CourseList.CourseActivity"
     >
     <LinearLayout
         android:layout_width="match_parent"
