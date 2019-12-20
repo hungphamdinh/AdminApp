@@ -1,6 +1,6 @@
 package com.example.adminapp.View.InsertTutor;
 
 public interface IInsertView {
-    void onSuccess(String msg);
-    void onFailed(String msg);
+    void onSuccessDisplay(String msg);
+    void onFailedDisplay(String msg);
 }

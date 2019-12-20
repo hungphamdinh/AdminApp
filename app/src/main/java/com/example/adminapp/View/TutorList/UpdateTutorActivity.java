@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.esotericsoftware.kryo.util.ObjectMap;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
 import com.example.adminapp.Model.Tutor;
@@ -30,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UpdateTutorActivity extends AppCompatActivity {
@@ -159,7 +161,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Tutor, StaffViewHolder>
                 (Tutor.class, R.layout.tutor_layout,
                         StaffViewHolder.class,
-                        tutorRef) {
+                        tutorRef.orderByChild("ckWork").equalTo(1)) {
             @Override
             protected void populateViewHolder(final StaffViewHolder viewHolder, final Tutor model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
@@ -208,19 +210,21 @@ public class UpdateTutorActivity extends AppCompatActivity {
     private void deleteDialog(final String key) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Xóa");
-        alertDialog.setMessage("Bạn có chắc muốn xóa?");
+        alertDialog.setMessage("Giảng viên vẫn đang hoạt động, bạn có chắc muốn xóa?");
         //alertDialog.create();
         //alertDialog.show();
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                tutorRef.child(key).removeValue();
+                HashMap<String, Object>map=new HashMap<>();
+                map.put("ckWork",0);
+                tutorRef.child(key).updateChildren(map);
                 Toast.makeText(UpdateTutorActivity.this,"Xóa thành công",Toast.LENGTH_SHORT).show();
                 suggestList.clear();
                 dialogInterface.dismiss();
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

@@ -16,11 +16,11 @@ public class InsertTutorPresenter implements TutorListener {
     }
     @Override
     public void onSuccess(String msg) {
-        insertView.onSuccess(msg);
+        insertView.onSuccessDisplay(msg);
     }
 
     @Override
     public void onFailer(String msg) {
-        insertView.onFailed(msg);
+        insertView.onFailedDisplay(msg);
     }
 }

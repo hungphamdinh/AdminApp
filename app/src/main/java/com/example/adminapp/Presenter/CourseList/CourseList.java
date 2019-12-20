@@ -43,7 +43,7 @@ public class CourseList {
 
     public void onRequest(String key) {
         DatabaseReference requestRef= FirebaseDatabase.getInstance().getReference("Requests");
-        requestRef.orderByChild("courseId").equalTo(key).addValueEventListener(new ValueEventListener() {
+        requestRef.orderByChild("courseId").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
@@ -61,7 +61,7 @@ public class CourseList {
     }
     public void onDoc(String key) {
         DatabaseReference docRef= FirebaseDatabase.getInstance().getReference("Doc");
-        docRef.orderByChild("courseId").equalTo(key).addValueEventListener(new ValueEventListener() {
+        docRef.orderByChild("courseId").equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(final DataSnapshot childSnap:dataSnapshot.getChildren()) {
@@ -81,7 +81,9 @@ public class CourseList {
         try {
             if(key!=null) {
                 DatabaseReference doc=FirebaseDatabase.getInstance().getReference("Doc");
-                doc.child(key).removeValue();
+                HashMap<String,Object>map=new HashMap<>();
+                map.put("status",0);
+                doc.child(key).updateChildren(map);
             }
             else {
                 courseListListener.onError("Lỗi khi xóa doc");
@@ -96,7 +98,9 @@ public class CourseList {
         try {
             if(key!=null) {
                 DatabaseReference doc=FirebaseDatabase.getInstance().getReference("Requests");
-                doc.child(key).removeValue();
+                HashMap<String,Object>map=new HashMap<>();
+                map.put("status",0);
+                doc.child(key).updateChildren(map);
 
             }
             else {
@@ -112,7 +116,9 @@ public class CourseList {
         try {
             if(key!=null) {
                 DatabaseReference course=FirebaseDatabase.getInstance().getReference("Course");
-                course.child(key).removeValue();
+                HashMap<String,Object>map=new HashMap<>();
+                map.put("status",0);
+                course.child(key).updateChildren(map);
             }
             else {
                 courseListListener.onError("Lỗi khi xóa khóa học");

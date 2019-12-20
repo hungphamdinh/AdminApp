@@ -82,11 +82,13 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.DocViewHolder>
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Doc doc=dataSnapshot.getValue(Doc.class);
-                        if(doc==null){
+                        if(doc.getStatus()==0){
                             holder.itemView.setVisibility(View.GONE);
                         }
                         else {
-                            docRef.child(key).removeValue();
+                            HashMap<String,Object>map=new HashMap<>();
+                            map.put("status",0);
+                            docRef.child(key).updateChildren(map);
                             Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
                             dialogInterface.dismiss();
                         }

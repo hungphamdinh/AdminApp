@@ -1,90 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    tools:context=".View.MainActivity">
+    android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <androidx.cardview.widget.CardView
-            app:cardUseCompatPadding="true"
-            app:cardElevation="10dp"
-            app:cardCornerRadius="10dp"
-            android:layout_width="170dp"
-            android:layout_height="200dp">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Tạo khóa học"
-                android:id="@+id/btnInsertCourse"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:cardUseCompatPadding="true"
-            app:cardElevation="10dp"
-            app:cardCornerRadius="10dp"
-            android:layout_width="170dp"
-            android:layout_marginTop="20dp"
-            android:layout_height="200dp">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Chỉnh sửa khóa học"
-            android:id="@+id/btnUpdateCourse"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <androidx.cardview.widget.CardView
-            app:cardUseCompatPadding="true"
-            app:cardElevation="10dp"
-            app:cardCornerRadius="10dp"
-            android:layout_width="170dp"
-            android:layout_height="200dp">
-    <Button
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Thêm giảng viên"
-        android:id="@+id/btnInsertTutor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:cardUseCompatPadding="true"
-            app:cardElevation="10dp"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="10dp"
-            android:layout_width="170dp"
-            android:layout_height="200dp">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Thay đổi thông tin giảng viên"
-            android:id="@+id/btnUpdateTutor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        </androidx.cardview.widget.CardView>
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        tools:context=".View.MainActivity">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Tạo khóa học"
+                    android:id="@+id/btnInsertCourse"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Chỉnh sửa khóa học"
+                    android:id="@+id/btnUpdateCourse"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Thêm giảng viên"
+                    android:id="@+id/btnInsertTutor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Thay đổi thông tin giảng viên"
+                    android:id="@+id/btnUpdateTutor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Thay đổi thông tin học viên"
+                    android:id="@+id/btnUpdateUser"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardElevation="10dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="10dp"
+                android:layout_width="170dp"
+                android:layout_height="200dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Đăng xuất"
+                    android:id="@+id/btnSignOut"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -6,6 +6,15 @@ public class Doc {
     private String docUrl;
     private String type;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    private int status;
     public String getType() {
         return type;
     }

@@ -78,7 +78,7 @@ public class InsertCourse {
                             insertCourseListener.onFailed("Số điện thoại không tồn tại");
                         }
                         else{
-                            HashMap<String, String> map = new HashMap<>();
+                            HashMap<String, Object> map = new HashMap<>();
                             //User user = new User(usernameTemp, passwordTemp,"");
                             map.put("courseName", nameTemp);
                             map.put("image",imageUri);
@@ -90,6 +90,7 @@ public class InsertCourse {
                             map.put("isBuy", "false");
                             map.put("begin",dateBeTemp);
                             map.put("end",dateEndTemp);
+                            map.put("status",1);
                             courseRef.push().setValue(map);
                             //   edtName.setText(dataSnapshot.child(phoneTemp).toString());
                             //insertCourseListener.onSuccess("Thêm thành công");
@@ -137,12 +138,13 @@ public class InsertCourse {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        HashMap<String, String> map = new HashMap<>();
+                        HashMap<String, Object> map = new HashMap<>();
                         String url=taskSnapshot.getDownloadUrl().toString();
                         map.put("courseId", key);
                         map.put("docName", "Tài liệu");
                         map.put("type","doc");
                         map.put("docUrl", url);
+                        map.put("status",1);
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Doc");
                         reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

@@ -68,7 +68,7 @@ public class TestActivity extends AppCompatActivity {
 
     private void setAdapter() {
         DatabaseReference testRef= FirebaseDatabase.getInstance().getReference("Doc");
-        testRef.addValueEventListener(new ValueEventListener() {
+        testRef.orderByChild("status").equalTo(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Doc> docList=new ArrayList<>();
@@ -100,10 +100,11 @@ public class TestActivity extends AppCompatActivity {
         }
         else {
             DatabaseReference docRef = FirebaseDatabase.getInstance().getReference("Doc");
-            HashMap<String, String> map = new HashMap<>();
+            HashMap<String, Object> map = new HashMap<>();
             map.put("courseId", docId);
             map.put("docName", edtName.getText().toString());
             map.put("type", "test");
+            map.put("status",1);
             map.put("docUrl", edtTest.getText().toString());
             docRef.push().setValue(map);
             Toast.makeText(TestActivity.this,"Thêm bài test thành công",Toast.LENGTH_SHORT).show();

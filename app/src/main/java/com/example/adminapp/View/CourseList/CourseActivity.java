@@ -155,16 +155,16 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
         adapter = new FirebaseRecyclerAdapter<Course, CourseViewHolder>
                 (Course.class, R.layout.course_layout,
                         CourseViewHolder.class,
-                        course) {
+                        course.orderByChild("status").equalTo(1)) {
             @Override
             protected void populateViewHolder(final CourseViewHolder viewHolder, final Course model, int position) {
-                viewHolder.txtName.setText(model.getCourseName());
-                viewHolder.txtPrice.setText("Giá: " + model.getPrice());
-                viewHolder.txtDescript.setText(model.getDescript());
-                courseListPresenter=new CourseListPresenter(CourseActivity.this,viewHolder);
-                courseListPresenter.onLoadCourse(adapter.getRef(position).getKey());
-                deleteCourse(adapter.getRef(position).getKey(),viewHolder);
-
+                    //viewHolder.itemView.setVisibility(View.VISIBLE);
+                    viewHolder.txtName.setText(model.getCourseName());
+                    viewHolder.txtPrice.setText("Giá: " + model.getPrice());
+                    viewHolder.txtDescript.setText(model.getDescript());
+                    courseListPresenter = new CourseListPresenter(CourseActivity.this, viewHolder);
+                    courseListPresenter.onLoadCourse(adapter.getRef(position).getKey());
+                    deleteCourse(adapter.getRef(position).getKey(), viewHolder);
             }
 
         };

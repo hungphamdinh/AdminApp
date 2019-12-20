@@ -24,8 +24,9 @@ public class InsertTutor {
             final String email = editText.get("email").toString();
             final String exp=editText.get("exp").toString();
             final String emailPattern = "[a-zA-Z0-9._-]+@gmail+\\.+com+";
-            if (userName.equals("") || pass.equals("") || phone.equals("") || email.equals("")||exp.equals("")||userName.length()!=10) {
-                tutorListener.onFailer("Please check your inform");
+            if (userName.equals("") || pass.equals("") || phone.equals("") || email.equals("")||
+                    exp.equals("")||phone.length()!=10) {
+                tutorListener.onFailer("Kiểm tra lại thông tin của bạn");
             } else {
                 final boolean check = dataSnapshot.child(phone).exists();
                 if (check == false) {
@@ -36,22 +37,23 @@ public class InsertTutor {
                             if (email.trim().matches(emailPattern)) {
                                 if (check == true) {
                                     //progress.dismiss();
-                                    tutorListener.onFailer("This phone is exist");
+                                    tutorListener.onFailer("Số điện thoại này đã tồn tại");
                                 } else if (snapshot.exists()) {
-                                    tutorListener.onFailer("This email is exist");
+                                    tutorListener.onFailer("Email này đã tồn tại");
                                 } else {
-                                    HashMap<String, String> map = new HashMap<>();
+                                    HashMap<String, Object> map = new HashMap<>();
                                     map.put("username", userName);
                                     map.put("password", pass);
                                     map.put("email", email);//
                                     map.put("status", "offline");
                                     map.put("experience",exp);
+                                    map.put("ckWork",1);
                                     map.put("avatar", "default");
                                     table_user.child(phone).setValue(map);
-                                    tutorListener.onSuccess("Sign up success");
+                                    tutorListener.onSuccess("Đăng ký thành công");
                                 }
                             } else {
-                                tutorListener.onFailer("Invalid email");
+                                tutorListener.onFailer("Email không hợp lệ");
                             }
                         }
 
@@ -63,7 +65,7 @@ public class InsertTutor {
 
 
                 } else {
-                    tutorListener.onFailer("This phone is exist");
+                    tutorListener.onFailer("Số điện thoại này đã tồn tại");
                 }
             }
         }
