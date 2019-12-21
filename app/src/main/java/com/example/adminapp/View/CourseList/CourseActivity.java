@@ -53,6 +53,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference course;
     private FirebaseDatabase database;
+    private ArrayList<Course>courseList;
     private FirebaseRecyclerAdapter<Course, CourseViewHolder> adapter;
     private FirebaseRecyclerAdapter<Course, CourseViewHolder> searchAdapter;
     private CourseListPresenter courseListPresenter;
@@ -67,7 +68,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
         database = FirebaseDatabase.getInstance();
         course = database.getReference("Course");
         recyclerMenu = (RecyclerView) findViewById(R.id.listCourse);
-        recyclerMenu.setHasFixedSize(false);
+        recyclerMenu.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerMenu.setLayoutManager(layoutManager);
         spinnerStatusCourse =(MaterialSpinner)findViewById(R.id.statusSpinnerCourse);
@@ -198,6 +199,26 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
             @Override
             protected void populateViewHolder(final CourseViewHolder viewHolder, final Course model, final int position) {
                 //viewHolder.itemView.setVisibility(View.VISIBLE);
+//                DatabaseReference courseRef=FirebaseDatabase.getInstance().getReference("Course");
+//                courseRef.child(adapter.getRef(position).getKey()).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        Course courseItem=dataSnapshot.getValue(Course.class);
+//                        if(courseItem.getStatus()==1){
+//                            viewHolder.txtIsBuy.setVisibility(View.GONE);
+//                            setUpViewHolder(viewHolder, model, position);
+//                        }
+//                        else {
+//                            viewHolder.itemView.setVisibility(View.GONE);
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
                 if(model.getStatus()==0){
                     viewHolder.txtIsBuy.setVisibility(View.VISIBLE);
                     setUpViewHolder(viewHolder, model, position);
@@ -249,8 +270,9 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
                         CourseViewHolder.class,
                         course.orderByChild("isBuy").equalTo("true")) {
             @Override
-            protected void populateViewHolder(final CourseViewHolder viewHolder, final Course model, int position) {
+            protected void populateViewHolder(final CourseViewHolder viewHolder, final Course model, final int position) {
                 //viewHolder.itemView.setVisibility(View.VISIBLE);
+
                 if(model.getStatus()==0){
                     viewHolder.txtIsBuy.setVisibility(View.VISIBLE);
                     setUpViewHolder(viewHolder, model, position);
@@ -258,6 +280,7 @@ public class CourseActivity extends AppCompatActivity implements CourseListView 
                 else {
                     viewHolder.txtIsBuy.setVisibility(View.GONE);
                     setUpViewHolder(viewHolder, model, position);
+//                    viewHolder.itemView.setVisibility(View.INVISIBLE);
                 }
             }
 

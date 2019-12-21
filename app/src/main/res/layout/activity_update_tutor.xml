@@ -41,6 +41,14 @@
             app:mt_speechMode="false"
             >
         </com.mancj.materialsearchbar.MaterialSearchBar>
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:layout_width="150dp"
+            android:background="#fff"
+            android:layout_marginLeft="10dp"
+            android:textColor="#666666"
+            android:layout_height="wrap_content"
+            android:id="@+id/statusSpinnerTutor"
+            />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -11,6 +11,7 @@ import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.adminapp.View.CourseList.CourseActivity;
 import com.example.adminapp.View.MainActivity;
 import com.example.adminapp.View.UserList.UpdateUserActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -83,7 +84,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                             mChannel.setShowBadge(false);
                             notificationManager.createNotificationChannel(mChannel);
                         }
-                        Intent intent = new Intent(MyFirebaseMessaging.this, UpdateUserActivity.class);
+                        Intent intent = new Intent(MyFirebaseMessaging.this, CourseActivity.class);
                         intent.putExtra("phoneUser",keyUser);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessaging.this, j, intent, PendingIntent.FLAG_ONE_SHOT);

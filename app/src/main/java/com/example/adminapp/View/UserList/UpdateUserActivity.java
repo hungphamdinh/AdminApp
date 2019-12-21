@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
 import com.example.adminapp.Model.Tutor;
@@ -73,7 +74,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         recyclerMenu.setLayoutManager(layoutManager);
         recyclerMenu.setHasFixedSize(true);
         loadSuggest();
-        loadUser();
+        loadActiveUser();
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_user);
         spinnerStatusUser=(MaterialSpinner)findViewById(R.id.statusSpinnerUser);
         setSpinner();
@@ -96,18 +97,16 @@ public class UpdateUserActivity extends AppCompatActivity {
 
     private void setSpinner() {
 
-        spinnerStatusUser.setItems("Tất cả","Đang chờ","Kích hoạt","Vô hiệu hóa");
+        spinnerStatusUser.setItems("Đang chờ","Kích hoạt","Vô hiệu hóa");
         spinnerStatusUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
 
                 if(spinnerStatusUser.getSelectedIndex()==0){
-                    loadUser();
+                    loadWaitToCkUser();
+
                 }
                 else if(spinnerStatusUser.getSelectedIndex()==1){
-                    loadWaitToCkUser();
-                }
-                else if(spinnerStatusUser.getSelectedIndex()==2){
                     loadActiveUser();
                 }
                 else {
@@ -173,6 +172,10 @@ public class UpdateUserActivity extends AppCompatActivity {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
                 //viewHolder.txtDescript.setText(model.getDescript());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profile);
                 final User local = model;
                 deleteUser(searchAdapter.getRef(position).getKey(), viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
@@ -214,6 +217,10 @@ public class UpdateUserActivity extends AppCompatActivity {
             protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profile);
                 deleteUser(adapter.getRef(position).getKey(), viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
@@ -237,6 +244,10 @@ public class UpdateUserActivity extends AppCompatActivity {
             protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profile);
                 deleteUser(adapter.getRef(position).getKey(), viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
@@ -260,6 +271,10 @@ public class UpdateUserActivity extends AppCompatActivity {
             protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profile);
                 deleteUser(adapter.getRef(position).getKey(), viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
@@ -275,29 +290,6 @@ public class UpdateUserActivity extends AppCompatActivity {
         recyclerMenu.setAdapter(adapter);
     }
 
-    private void loadUser() {
-        adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>
-                (User.class, R.layout.user_layout,
-                        UserViewHolder.class,
-                        userRef) {
-            @Override
-            protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
-                viewHolder.txtName.setText(model.getUsername());
-                viewHolder.txtEmail.setText(model.getEmail());
-                deleteUser(adapter.getRef(position).getKey(), viewHolder);
-                viewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        showUpdateOrderDialog(adapter.getRef(position).getKey());
-                    }
-                });
-
-            }
-
-        };
-        adapter.notifyDataSetChanged();
-        recyclerMenu.setAdapter(adapter);
-    }
 
     private void deleteUser(final String key, UserViewHolder holder) {
         if (key != null) {
@@ -322,7 +314,7 @@ public class UpdateUserActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("ckWork", 0);
+                map.put("ckAccount", 2);
                 userRef.child(key).updateChildren(map);
                 Toast.makeText(UpdateUserActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
                 suggestList.clear();

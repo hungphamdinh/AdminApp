@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
     private ArrayList<Tutor> tutorList;
     private MaterialSearchBar materialSearchBar;
     private List<String> suggestList=new ArrayList<>();
-
+    private MaterialSpinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class UpdateTutorActivity extends AppCompatActivity {
         tutorRef =database.getReference("Tutor");
         recyclerMenu=(RecyclerView)findViewById(R.id.listTutor);
         recyclerMenu.setHasFixedSize(true);
+        spinner=(MaterialSpinner)findViewById(R.id.statusSpinnerTutor);
         layoutManager= new LinearLayoutManager(this);
         recyclerMenu.setLayoutManager(layoutManager);
         loadTutor();
@@ -64,7 +66,55 @@ public class UpdateTutorActivity extends AppCompatActivity {
         //materialSearchBar.setTextColor(Color.parseColor("#000"));
         materialSearchBar.setCardViewElevation(10);
         setUpSearchBar();
+        setSpinner();
+    }
 
+    private void setSpinner() {
+
+        spinner.setItems("Kích hoạt","Vô hiệu hóa");
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+
+                if(spinner.getSelectedIndex()==0){
+                    loadTutor();
+
+                }
+                else {
+                    loadInActiveTutor();
+                }
+            }
+        });
+    }
+
+    private void loadInActiveTutor() {
+        adapter = new FirebaseRecyclerAdapter<Tutor, StaffViewHolder>
+                (Tutor.class, R.layout.tutor_layout,
+                        StaffViewHolder.class,
+                        tutorRef.orderByChild("ckWork").equalTo(0)) {
+            @Override
+            protected void populateViewHolder(final StaffViewHolder viewHolder, final Tutor model, int position) {
+                viewHolder.txtName.setText(model.getUsername());
+                viewHolder.txtEmail.setText(model.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profileImage);
+                deleteCourse(adapter.getRef(position).getKey(),viewHolder);
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        Intent intent=new Intent(UpdateTutorActivity.this, DetailUpdateTutorActivity.class);
+                        intent.putExtra("phoneKey",adapter.getRef(position).getKey());
+                        startActivity(intent);
+                    }
+                });
+
+            }
+
+        };
+        adapter.notifyDataSetChanged();
+        recyclerMenu.setAdapter(adapter);
     }
 
     private void setUpSearchBar() {
