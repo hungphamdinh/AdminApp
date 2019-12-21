@@ -8,6 +8,8 @@
     >
     <com.jaredrummler.materialspinner.MaterialSpinner
         android:layout_width="match_parent"
+        android:background="#fff"
+        android:textColor="#666666"
         android:layout_height="wrap_content"
         android:id="@+id/statusSpinner"
         />

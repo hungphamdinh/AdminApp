@@ -60,7 +60,7 @@ public class UpdateUserActivity extends AppCompatActivity {
     private ArrayList<Tutor> tutorList;
     private MaterialSearchBar materialSearchBar;
     private List<String> suggestList = new ArrayList<>();
-    private MaterialSpinner spinner;
+    private MaterialSpinner spinner,spinnerStatusUser;
     private String userPhone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +72,11 @@ public class UpdateUserActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerMenu.setLayoutManager(layoutManager);
         recyclerMenu.setHasFixedSize(true);
+        loadSuggest();
         loadUser();
         materialSearchBar = (MaterialSearchBar) findViewById(R.id.search_user);
-        loadSuggest();
+        spinnerStatusUser=(MaterialSpinner)findViewById(R.id.statusSpinnerUser);
+        setSpinner();
         materialSearchBar.setLastSuggestions(suggestList);
         if (getIntent() != null)
             userPhone = getIntent().getStringExtra("phoneUser");
@@ -89,6 +91,30 @@ public class UpdateUserActivity extends AppCompatActivity {
         materialSearchBar.setCardViewElevation(10);
         setUpSearchBar();
 
+
+    }
+
+    private void setSpinner() {
+
+        spinnerStatusUser.setItems("Tất cả","Đang chờ","Kích hoạt","Vô hiệu hóa");
+        spinnerStatusUser.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+
+                if(spinnerStatusUser.getSelectedIndex()==0){
+                    loadUser();
+                }
+                else if(spinnerStatusUser.getSelectedIndex()==1){
+                    loadWaitToCkUser();
+                }
+                else if(spinnerStatusUser.getSelectedIndex()==2){
+                    loadActiveUser();
+                }
+                else {
+                    loadInActiveUser();
+                }
+            }
+        });
     }
 
     private void setUpSearchBar() {
@@ -179,7 +205,75 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         });
     }
+    private void loadWaitToCkUser() {
+        adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>
+                (User.class, R.layout.user_layout,
+                        UserViewHolder.class,
+                        userRef.orderByChild("ckAccount").equalTo(0)) {
+            @Override
+            protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
+                viewHolder.txtName.setText(model.getUsername());
+                viewHolder.txtEmail.setText(model.getEmail());
+                deleteUser(adapter.getRef(position).getKey(), viewHolder);
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        showUpdateOrderDialog(adapter.getRef(position).getKey());
+                    }
+                });
 
+            }
+
+        };
+        adapter.notifyDataSetChanged();
+        recyclerMenu.setAdapter(adapter);
+    }
+    private void loadActiveUser() {
+        adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>
+                (User.class, R.layout.user_layout,
+                        UserViewHolder.class,
+                        userRef.orderByChild("ckAccount").equalTo(1)) {
+            @Override
+            protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
+                viewHolder.txtName.setText(model.getUsername());
+                viewHolder.txtEmail.setText(model.getEmail());
+                deleteUser(adapter.getRef(position).getKey(), viewHolder);
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        showUpdateOrderDialog(adapter.getRef(position).getKey());
+                    }
+                });
+
+            }
+
+        };
+        adapter.notifyDataSetChanged();
+        recyclerMenu.setAdapter(adapter);
+    }
+    private void loadInActiveUser() {
+        adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>
+                (User.class, R.layout.user_layout,
+                        UserViewHolder.class,
+                        userRef.orderByChild("ckAccount").equalTo(2)) {
+            @Override
+            protected void populateViewHolder(final UserViewHolder viewHolder, final User model, int position) {
+                viewHolder.txtName.setText(model.getUsername());
+                viewHolder.txtEmail.setText(model.getEmail());
+                deleteUser(adapter.getRef(position).getKey(), viewHolder);
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position, boolean isLongClick) {
+                        showUpdateOrderDialog(adapter.getRef(position).getKey());
+                    }
+                });
+
+            }
+
+        };
+        adapter.notifyDataSetChanged();
+        recyclerMenu.setAdapter(adapter);
+    }
 
     private void loadUser() {
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>
@@ -248,7 +342,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         View subView=inflater.inflate(R.layout.alert_dialog_update_status,null);
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(UpdateUserActivity.this);
         alertDialog.setTitle("Cập nhật tài khoản");
-        alertDialog.setMessage("Chọn trạng thái cho tài khoản người dùng");
+        alertDialog.setMessage("Chọn trạng thái");
         //alertDialog.create();
         spinner=(MaterialSpinner) subView.findViewById(R.id.statusSpinner);
         spinner.setItems("Đang chờ","Kích hoạt","Vô hiệu hóa");
@@ -277,7 +371,7 @@ public class UpdateUserActivity extends AppCompatActivity {
                 mapNotify.put("sender",userPhone);
                 mapNotify.put("reciever",key);
                 mapNotify.put("adminName","Admin");
-                mapNotify.put("msg","Tài khoản "+key+"\nđã "+spinner.getItems());
+                mapNotify.put("msg","Tài khoản "+key+" đã thay đổi trạng thái");
                 userRef.child(localKey).updateChildren(map);
                 sendNotification(mapNotify);
             }
@@ -335,5 +429,4 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         });
     }
-
 }

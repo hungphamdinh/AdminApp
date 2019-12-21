@@ -101,12 +101,13 @@ import com.example.adminapp.R;
     public class StaffViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         public TextView txtName,txtCourseName,txtDescript,txtEmail,txtSchedule;
         private ItemClickListener itemClickListener;
-        public ImageView btnDelete;
+        public ImageView btnDelete,profileImage;
         public StaffViewHolder(View itemView) {
             super(itemView);
             txtName=(TextView)itemView.findViewById(R.id.txtUsername);
             txtEmail=(TextView)itemView.findViewById(R.id.txtEmail);
             btnDelete=(ImageView)itemView.findViewById(R.id.btnDeleteTutor);
+            profileImage=(ImageView)itemView.findViewById(R.id.imgProfile);
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
         }

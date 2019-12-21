@@ -13,16 +13,18 @@ import com.example.adminapp.R;
 
 
 public class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnCreateContextMenuListener {
-    public TextView txtName,txtPrice,txtDescript, txtTutorName,txtDoc;
-    public ImageView btnDelete;
+    public TextView txtName,txtPrice,txtDescript, txtIsBuy,txtDoc;
+    public ImageView btnDelete,imgCourse,btnCheck;
     private ItemClickListener itemClickListener;
     public CourseViewHolder(View itemView) {
         super(itemView);
         txtName=(TextView)itemView.findViewById(R.id.txtCourseName);
         txtPrice=(TextView)itemView.findViewById(R.id.txtCoursePrice);
         txtDescript=(TextView)itemView.findViewById(R.id.txtCourseDescript);
-        txtDoc=(TextView)itemView.findViewById(R.id.txtCourseDoc);
+        txtIsBuy =(TextView)itemView.findViewById(R.id.txtIsBuy);
         btnDelete=(ImageView)itemView.findViewById(R.id.btnDeleteCourse);
+        imgCourse=(ImageView)itemView.findViewById(R.id.imgCourse);
+        btnCheck=(ImageView)itemView.findViewById(R.id.btnCheckCourse);
         itemView.setOnClickListener(this);
         itemView.setOnCreateContextMenuListener(this);
 

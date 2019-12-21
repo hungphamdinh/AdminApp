@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.esotericsoftware.kryo.util.ObjectMap;
 import com.example.adminapp.Common.Common;
 import com.example.adminapp.Interface.ItemClickListener;
@@ -122,6 +123,10 @@ public class UpdateTutorActivity extends AppCompatActivity {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
                 //viewHolder.txtDescript.setText(model.getDescript());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profileImage);
                 final Tutor local=model;
                 deleteCourse(searchAdapter.getRef(position).getKey(),viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
@@ -166,6 +171,10 @@ public class UpdateTutorActivity extends AppCompatActivity {
             protected void populateViewHolder(final StaffViewHolder viewHolder, final Tutor model, int position) {
                 viewHolder.txtName.setText(model.getUsername());
                 viewHolder.txtEmail.setText(model.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(model.getAvatar())
+                        .centerCrop()
+                        .into(viewHolder.profileImage);
                 deleteCourse(adapter.getRef(position).getKey(),viewHolder);
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
